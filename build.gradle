@@ -37,8 +37,14 @@ dependencies {
 	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl'
 	// Tomcat Jasper
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-
+	// security tag library
 	implementation 'org.springframework.security:spring-security-taglibs'
+	//querydsl 적용
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
 
 }
 
