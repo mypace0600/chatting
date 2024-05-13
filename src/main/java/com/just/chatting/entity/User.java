@@ -24,6 +24,8 @@ public class User {
 
     private String password;
 
+    private String nickName;
+
     @OneToMany(mappedBy = "fromUser")
     private List<Friend> friendsSent;
 
@@ -36,7 +38,7 @@ public class User {
         return User.builder()
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .roleType(RoleType.ADMIN.getKey())
+                .roleType(RoleType.USER.getKey())
                 .build();
     }
 }
