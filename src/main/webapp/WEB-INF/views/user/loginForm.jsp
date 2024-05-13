@@ -18,6 +18,7 @@
                 <input type="password" name="password" id="password" class="form-control" placeholder="비밀번호를 입력해주세요"/>
             </div>
             <button type="submit" class="btn btn-primary">로그인</button>
+            <button type="button" class="btn btn-primary" onclick="history.back()">뒤로가기</button>
         </form>
     </div>
 </body>

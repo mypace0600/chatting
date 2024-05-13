@@ -19,6 +19,7 @@
             </div>
             <div style="text-align:center">
                 <button type="submit" class="btn btn-primary">회원가입</button>
+            <button type="button" class="btn btn-primary" onclick="history.back()">뒤로가기</button>
             </div>
         </form>
     </div>
