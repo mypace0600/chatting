@@ -1,15 +1,15 @@
 package com.just.chatting.controller;
 
+import com.just.chatting.common.ResponseDto;
 import com.just.chatting.entity.User;
 import com.just.chatting.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -45,5 +45,13 @@ public class UserController {
             return "auth/joinForm";
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/user/find")
+    @ResponseBody
+    public ResponseDto<Integer> findUser(@RequestParam String nickName, Model model){
+        User findUser = userService.findByNickName(nickName);
+        model.addAttribute("findUser",findUser);
+        return new ResponseDto<>(HttpStatus.OK.value(),1);
     }
 }
