@@ -1,9 +1,11 @@
 package com.just.chatting.controller;
 
+import com.just.chatting.common.CamelCaseMap;
 import com.just.chatting.common.ResponseDto;
 import com.just.chatting.entity.User;
 import com.just.chatting.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -52,6 +57,19 @@ public class UserController {
     public ResponseDto<Integer> findUser(@RequestParam String nickName, Model model){
         User findUser = userService.findByNickName(nickName);
         model.addAttribute("findUser",findUser);
+        return new ResponseDto<>(HttpStatus.OK.value(),1);
+    }
+
+    @PostMapping("/user/check-email")
+    @ResponseBody
+    public ResponseDto<Integer> checkEmail(@RequestBody CamelCaseMap map){
+        log.debug("@@@@@@@@@@@@@@@@ email :{}",map.get("email"));
+        String email = String.valueOf(map.get("email"));
+        Optional<User> findUser = userService.findByEmail(email);
+        log.debug("@@@@@@@@@@@@@@@@ findUser :{}",findUser);
+        if(findUser.isPresent()){
+            return new ResponseDto<>(HttpStatus.CONFLICT.value(), 2);
+        }
         return new ResponseDto<>(HttpStatus.OK.value(),1);
     }
 }

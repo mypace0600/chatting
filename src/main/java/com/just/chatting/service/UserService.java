@@ -34,4 +34,8 @@ public class UserService {
         User findUser = userRepository.findByNickName(nickName).orElseThrow(EntityNotFoundException::new);
         return findUser;
     }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }
