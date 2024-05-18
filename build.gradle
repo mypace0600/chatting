@@ -45,7 +45,8 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-
+	// camelCaseMap을 위한 라이브러리
+	implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
 }
 
 tasks.named('test') {
