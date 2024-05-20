@@ -47,6 +47,13 @@ dependencies {
 
 	// camelCaseMap을 위한 라이브러리
 	implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
+
+	// mail 발송
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'com.sun.mail:jakarta.mail:2.0.1'
+
+	// redis
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.2.2'
 }
 
 tasks.named('test') {
