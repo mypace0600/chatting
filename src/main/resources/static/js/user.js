@@ -1,23 +1,20 @@
 let index = {
     init : function () {
-        $("#emailDuplicate").on("click", () => {
-            this.checkEmailDuplicate();
+        $("#emailDuplicateCheckBtn").on("click", () => {
+            this.emailDuplicateCheck();
         });
-        $("#emailVerificationCodeButton").on("click", () => {
-            this.sendVerificationCode();
+        $("#emailVerifyCodeSendBtn").on("click", () => {
+            this.emailVerifyCodeSend();
         });
-        $("#verifyEmailCodeButton").on("click", () => {
-            this.verifyEmailCode();
+        $("#verifyEmailCheckBtn").on("click", () => {
+            this.verifyEmailCheck();
         });
-        $("#checkNicknameDuplicateButton").on("click", () => {
-            this.checkNicknameDuplicate();
-        });
-        $("#confirmPassword").on("input", () => {
-            this.checkPasswordMatch();
+        $("#nicknameDuplicateCheckBtn").on("click", () => {
+            this.nicknameDuplicateCheck();
         });
     },
 
-    checkEmailDuplicate : function (){
+    emailDuplicateCheck : function (){
         let email = $("#email").val();
         console.log(email);
         let data = {
@@ -38,14 +35,14 @@ let index = {
             } else {
                 $("#emailDuplicateCheck").val(true);
                 alert("이메일 중복이 없습니다.");
-                $("#emailVerificationCodeButton").show(); // 중복 확인 후 인증번호 발송 버튼 노출
+                $("#emailVerifyCodeSendBtn").show(); // 중복 확인 후 인증번호 발송 버튼 노출
             }
         }).fail(function (error){
             alert(JSON.stringify(error));
         });
     },
 
-    sendVerificationCode: function () {
+    emailVerifyCodeSend: function () {
             let email = $("#email").val();
             let data = { emailAddress: email };
 
@@ -67,7 +64,7 @@ let index = {
             });
         },
 
-        verifyEmailCode: function () {
+        verifyEmailCheck: function () {
             let code = $("#emailVerificationCode").val();
             let email = $("#email").val();
             let data = {
@@ -104,7 +101,7 @@ let index = {
             }
         },
 
-        checkNicknameDuplicate: function () {
+        nicknameDuplicateCheck: function () {
             let nickname = $("#nickname").val();
             let data = { nickname: nickname };
 
