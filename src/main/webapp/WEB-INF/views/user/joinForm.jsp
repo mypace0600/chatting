@@ -14,9 +14,11 @@
                     <input type="email" name="email" id="email" class="form-control" placeholder="이메일을 입력해주세요"/>
                     <button type="button" class="btn" id="emailDuplicate">이메일 중복 확인</button>
                     <input type="hidden" name="emailDuplicateCheck" id="emailDuplicateCheck" value="false"/>
-                    <button type="button" class="btn" id="emailVerificationCodeButton" >이메일 인증번호 발송</button>
+
+                    <!-- 이메일 중복 확인 후 노출 -->
+                    <button type="button" class="btn" id="emailVerificationCodeButton" style="display:none;">이메일 인증번호 발송</button>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="emailVerificationGroup" style="display:none;">
                     <label for="emailVerificationCode">이메일 인증번호</label>
                     <input type="text" name="emailVerificationCode" id="emailVerificationCode" class="form-control" placeholder="인증번호를 입력해주세요"/>
                     <input type="hidden" name="emailVerifyCheck" id="emailVerifyCheck" value="false"/>

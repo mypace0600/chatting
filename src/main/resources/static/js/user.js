@@ -38,6 +38,7 @@ let index = {
             } else {
                 $("#emailDuplicateCheck").val(true);
                 alert("이메일 중복이 없습니다.");
+                $("#emailVerificationCodeButton").show(); // 중복 확인 후 인증번호 발송 버튼 노출
             }
         }).fail(function (error){
             alert(JSON.stringify(error));
@@ -57,6 +58,7 @@ let index = {
             }).done(function (resp) {
                 if (resp.status === 200) {
                     alert("인증번호가 발송되었습니다.");
+                    $("#emailVerificationGroup").show(); // 인증번호 발송 후 인증번호 입력 및 확인 버튼 노출
                 } else {
                     alert("인증번호 발송 실패");
                 }
