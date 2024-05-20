@@ -42,7 +42,8 @@ public class UserController {
     }
 
     @PostMapping("/auth/joinProc")
-    public String register(@ModelAttribute User user, Model model) {
+    public String register(@RequestBody User user, Model model) {
+        log.debug("@@@@@@@@@@@@@@@@@@ user :{}",user.toString());
         try {
             User createdUser = User.createUser(user, passwordEncoder);
             userService.register(createdUser);
@@ -81,9 +82,9 @@ public class UserController {
     @PostMapping("/user/check-nickname")
     @ResponseBody
     public ResponseDto<Integer> checkNickname(@RequestBody CamelCaseMap map){
-        log.debug("@@@@@@@@@@@@@@@@ nickname :{}",map.get("nickname"));
-        String nickname = String.valueOf(map.get("nickname"));
-        Optional<User> findUser = userService.findByNickName(nickname);
+        log.debug("@@@@@@@@@@@@@@@@ nickName :{}",map.get("nickName"));
+        String nickName = String.valueOf(map.get("nickName"));
+        Optional<User> findUser = userService.findByNickName(nickName);
         log.debug("@@@@@@@@@@@@@@@@ findUser :{}",findUser);
         if(findUser.isPresent()){
             return new ResponseDto<>(HttpStatus.CONFLICT.value(), 2);
