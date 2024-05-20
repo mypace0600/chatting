@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -49,7 +45,6 @@ public class MailService {
         }
 
         code = String.valueOf(randomData);
-        log.debug("@@@@@@@@@@@@@@ code :{}",code);
         return code;
     }
 
@@ -75,6 +70,13 @@ public class MailService {
 
         emailSender.send(message);
     }
+
+    public boolean checkVerifyCode(Mail mail) {
+        Optional<Mail> checkResult = repository.findByVerifyCodeAndEmailAddress(mail.getVerifyCode(),mail.getEmailAddress());
+        log.debug("@@@@@@@@@@@@@@@@@@ checkResult :{}",checkResult.isPresent());
+        return checkResult.isPresent();
+    }
+
     private class SMTPAuthenticator extends jakarta.mail.Authenticator{
         public PasswordAuthentication getPasswordAuthentication(){
             return new PasswordAuthentication(user,password);

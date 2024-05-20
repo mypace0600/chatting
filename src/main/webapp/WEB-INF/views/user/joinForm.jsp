@@ -20,7 +20,7 @@
                     <label for="emailVerificationCode">이메일 인증번호</label>
                     <input type="text" name="emailVerificationCode" id="emailVerificationCode" class="form-control" placeholder="인증번호를 입력해주세요"/>
                     <input type="hidden" name="emailVerifyCheck" id="emailVerifyCheck" value="false"/>
-                    <button type="button" class="btn" onclick="verifyEmailCode()">인증번호 확인</button>
+                    <button type="button" class="btn" id="verifyEmailCodeButton">인증번호 확인</button>
                 </div>
                 <div class="form-group">
                     <label for="password">비밀번호</label>

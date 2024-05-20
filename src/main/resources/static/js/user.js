@@ -67,7 +67,11 @@ let index = {
 
         verifyEmailCode: function () {
             let code = $("#emailVerificationCode").val();
-            let data = { code: code };
+            let email = $("#email").val();
+            let data = {
+                verifyCode: code,
+                emailAddress : email
+            };
 
             $.ajax({
                 type: "POST",
@@ -80,12 +84,10 @@ let index = {
                     $("#emailVerifyCheck").val(true);
                     alert("인증번호가 확인되었습니다.");
                 } else {
-                    $("#emailVerifyCheck").val(false);
                     alert("인증번호가 올바르지 않습니다.");
                 }
             }).fail(function (error) {
                 alert(JSON.stringify(error));
-                $("#emailVerifyCheck").val(false);
             });
         },
 
