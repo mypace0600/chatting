@@ -114,17 +114,14 @@ let index = {
             }).done(function (resp) {
                 if (resp.status === 500) {
                     alert("닉네임 조회 실패");
-                    $("#nicknameDuplicateCheck").val(false);
                 } else if (resp.status === 409) {
                     alert("닉네임이 중복 되었습니다.");
-                    $("#nicknameDuplicateCheck").val(false);
                 } else {
                     $("#nicknameDuplicateCheck").val(true);
                     alert("닉네임 중복이 없습니다.");
                 }
             }).fail(function (error) {
                 alert(JSON.stringify(error));
-                $("#nicknameDuplicateCheck").val(false);
             });
         }
 

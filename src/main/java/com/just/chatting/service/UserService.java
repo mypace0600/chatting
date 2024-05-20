@@ -30,8 +30,8 @@ public class UserService {
         }
     }
 
-    public User findByNickName(String nickName) {
-        User findUser = userRepository.findByNickName(nickName).orElseThrow(EntityNotFoundException::new);
+    public Optional<User> findByNickName(String nickName) {
+        Optional<User> findUser = userRepository.findByNickName(nickName);
         return findUser;
     }
 

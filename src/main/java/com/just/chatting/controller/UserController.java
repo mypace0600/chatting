@@ -4,6 +4,7 @@ import com.just.chatting.common.CamelCaseMap;
 import com.just.chatting.common.ResponseDto;
 import com.just.chatting.entity.User;
 import com.just.chatting.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -55,9 +56,13 @@ public class UserController {
     @GetMapping("/user/find")
     @ResponseBody
     public ResponseDto<Integer> findUser(@RequestParam String nickName, Model model){
-        User findUser = userService.findByNickName(nickName);
-        model.addAttribute("findUser",findUser);
-        return new ResponseDto<>(HttpStatus.OK.value(),1);
+        Optional<User> findUser = userService.findByNickName(nickName);
+        if(findUser.isPresent()) {
+            model.addAttribute("findUser", findUser);
+            return new ResponseDto<>(HttpStatus.OK.value(), 1);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 
     @PostMapping("/user/check-email")
@@ -66,6 +71,19 @@ public class UserController {
         log.debug("@@@@@@@@@@@@@@@@ email :{}",map.get("email"));
         String email = String.valueOf(map.get("email"));
         Optional<User> findUser = userService.findByEmail(email);
+        log.debug("@@@@@@@@@@@@@@@@ findUser :{}",findUser);
+        if(findUser.isPresent()){
+            return new ResponseDto<>(HttpStatus.CONFLICT.value(), 2);
+        }
+        return new ResponseDto<>(HttpStatus.OK.value(),1);
+    }
+
+    @PostMapping("/user/check-nickname")
+    @ResponseBody
+    public ResponseDto<Integer> checkNickname(@RequestBody CamelCaseMap map){
+        log.debug("@@@@@@@@@@@@@@@@ nickname :{}",map.get("nickname"));
+        String nickname = String.valueOf(map.get("nickname"));
+        Optional<User> findUser = userService.findByNickName(nickname);
         log.debug("@@@@@@@@@@@@@@@@ findUser :{}",findUser);
         if(findUser.isPresent()){
             return new ResponseDto<>(HttpStatus.CONFLICT.value(), 2);
