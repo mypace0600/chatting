@@ -3,7 +3,9 @@ package com.just.chatting.service;
 
 import com.just.chatting.entity.Mail;
 import com.just.chatting.repository.MailRepository;
+import jakarta.mail.PasswordAuthentication;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -15,18 +17,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 import jakarta.mail.MessagingException;
-import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailService {
-    @Value("${EMAIL_SEND_INFO.adminEmail}")
-    String user;
-    @Value("${EMAIL_SEND_INFO.adminEmailPassword}")
-    String password;
+    @Value("${email.admin.id}")
+    private String user;
+    @Value("${email.admin.password}")
+    private String password;
 
     //의존성 주입을 통해서 필요한 객체를 가져온다.
     private final JavaMailSender emailSender;
@@ -96,14 +97,10 @@ public class MailService {
     }
 
     public MimeMessage createEmailForm(String email, String discountCode) throws MessagingException {
-        String setFrom = user;
-        String toEmail = email;
-        String title = "할인코드";
-
         MimeMessage message = emailSender.createMimeMessage();
         message.setFrom(new InternetAddress(user));
         message.addRecipients(MimeMessage.RecipientType.TO,email);
-        message.setSubject("할인 코드");
+        message.setSubject("확인 코드");
         message.setText(discountCode);
         return message;
     }
@@ -111,12 +108,19 @@ public class MailService {
     public void send(Mail email) throws MessagingException {
         String verifyCode = createVerifyCode();
         email.setVerifyCode(verifyCode);
+        log.debug("@@@@@@@@@@@ mail :{}",email.toString());
         save(email);
 
         MimeMessage message = createEmailForm(email.getEmailAddress(),verifyCode);
+        log.debug("@@@@@@@@@@@ message :{}",message);
 
         emailSender.send(message);
 
+    }
+    private class SMTPAuthenticator extends jakarta.mail.Authenticator{
+        public PasswordAuthentication getPasswordAuthentication(){
+            return new PasswordAuthentication(user,password);
+        }
     }
 
 }

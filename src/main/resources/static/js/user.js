@@ -43,9 +43,10 @@ let index = {
             alert(JSON.stringify(error));
         });
     },
+
     sendVerificationCode: function () {
             let email = $("#email").val();
-            let data = { email: email };
+            let data = { emailAddress: email };
 
             $.ajax({
                 type: "POST",
