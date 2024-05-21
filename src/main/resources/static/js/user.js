@@ -141,12 +141,17 @@ let index = {
             }).done(function (resp) {
                 if (resp.success) {
                     alert("회원가입 성공");
-                    window.location.href = '/login';
+                    window.location.href = '/';
                 } else {
                     alert("회원가입 실패: " + resp.message);
                 }
             }).fail(function (error) {
-                alert(JSON.stringify(error));
+                let responseJSON = error.responseJSON;
+                if (responseJSON && responseJSON.message) {
+                    alert("회원가입 실패: " + responseJSON.message);
+                } else {
+                    alert("회원가입 실패: 서버 오류");
+                }
             });
         } else {
             alert('모든 항목을 올바르게 입력해주세요.');

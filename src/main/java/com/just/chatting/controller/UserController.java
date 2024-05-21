@@ -9,11 +9,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -42,16 +45,20 @@ public class UserController {
     }
 
     @PostMapping("/auth/joinProc")
-    public String register(@RequestBody User user, Model model) {
-        log.debug("@@@@@@@@@@@@@@@@@@ user :{}",user.toString());
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> register(@RequestBody User user) {
+        log.debug("@@@@@@@@@@@@@@@@@@ user :{}", user.toString());
+        Map<String, Object> response = new HashMap<>();
         try {
             User createdUser = User.createUser(user, passwordEncoder);
             userService.register(createdUser);
-        } catch (BadRequestException e){
-            model.addAttribute("errorMessage",e.getMessage());
-            return "auth/joinForm";
+            response.put("success", true);
+            return ResponseEntity.ok(response);
+        } catch (BadRequestException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
-        return "redirect:/";
     }
 
     @GetMapping("/user/find")
