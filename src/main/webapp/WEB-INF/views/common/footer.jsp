@@ -16,3 +16,4 @@
 </footer>
 </body>
 </html>
+<script src="/js/friend.js"></script>
