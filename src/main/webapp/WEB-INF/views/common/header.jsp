@@ -13,8 +13,8 @@
         <div class="main-content">
             <button><a href="/auth/logout">로그아웃</a></button>
             <div class="search-bar">
-                <input type="text" placeholder="친구 검색">
-                <button>검색</button>
+                <input type="text" placeholder="닉네임 검색" id="searchValue">
+                <button type="button" id="searchFriendBtn">검색</button>
             </div>
         </div>
     </sec:authorize>
