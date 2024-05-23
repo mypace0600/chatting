@@ -9,6 +9,7 @@ import com.just.chatting.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,11 +24,13 @@ public class FriendService {
         return friendRepository.findAllFriendsOfMine(principal.getUser());
     }
 
-    public void askFriend(User fromUser, FriendDto friendDto) {
-        User toUser = userRepository.findById(friendDto.getToUserId()).orElseThrow(EntityNotFoundException::new);
+    @Transactional
+    public void askFriend(User fromUser, Integer toUserId) {
+        User toUser = userRepository.findById(toUserId).orElseThrow(EntityNotFoundException::new);
         Friend friend = new Friend();
         friend.setFromUser(fromUser);
         friend.setToUser(toUser);
+        friend.setAreWeFriend(false);
         friendRepository.save(friend);
     }
 }

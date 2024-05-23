@@ -5,7 +5,9 @@
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <p id="searchedUserInfo"></p>
-        <button type="button" id="askFriend">친구신청</button>
+        <p id="searchedUserNickName"></p>
+        <p id="searchedUserEmail"></p>
+        <input type="hidden" id="userId"/>
+        <button type="button" id="askFriendBtn">친구신청</button>
     </div>
 </div>

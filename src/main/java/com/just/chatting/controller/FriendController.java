@@ -43,8 +43,15 @@ public class FriendController {
 
     @PostMapping("/friend/ask")
     @ResponseBody
-    public ResponseDto<Integer> askFriend(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody FriendDto friendDto){
-        friendService.askFriend(principal.getUser(), friendDto);
-        return new ResponseDto<>(HttpStatus.OK.value(),1);
+    public ResponseEntity<CamelCaseMap> askFriend(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody FriendDto friendDto){
+        CamelCaseMap resultBox = new CamelCaseMap();
+        try {
+            friendService.askFriend(principal.getUser(), friendDto.getToUserId());
+            resultBox.put("success",true);
+        } catch (Exception e){
+            e.printStackTrace();
+            resultBox.put("success",false);
+        }
+        return ResponseEntity.ok(resultBox);
     }
 }
