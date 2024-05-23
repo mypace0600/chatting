@@ -39,6 +39,7 @@ public class User {
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
                 .roleType(RoleType.USER.getKey())
+                .nickName(user.getNickName())
                 .build();
     }
 }
