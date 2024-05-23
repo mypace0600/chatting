@@ -11,6 +11,7 @@
     </sec:authorize>
     <sec:authorize access="isAuthenticated()">
         <div class="main-content">
+            <button><a href="/auth/logout">로그아웃</a></button>
             <div class="search-bar">
                 <input type="text" placeholder="친구 검색">
                 <button>검색</button>
