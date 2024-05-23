@@ -35,9 +35,8 @@ public class FriendController {
     @PostMapping("/friend/search")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> searchFriend(@RequestBody FriendSearchDto searchDto){
-        log.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@ searchDto :{}",searchDto.getSearchValue());
-        User searchedUser = userService.findByNickName(searchDto.getSearchValue()).orElseThrow(EntityNotFoundException::new);
         CamelCaseMap resultBox = new CamelCaseMap();
+        User searchedUser = userService.findByNickName(searchDto.getSearchValue()).orElseThrow(EntityNotFoundException::new);
         resultBox.put("searchedUser",searchedUser);
         return ResponseEntity.ok(resultBox);
     }
