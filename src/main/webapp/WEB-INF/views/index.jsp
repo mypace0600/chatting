@@ -12,4 +12,5 @@
         </ul>
     </div>
 </div>
+<%@include file="modal/searchResult.jsp"%>
 <%@include file="common/footer.jsp"%>
