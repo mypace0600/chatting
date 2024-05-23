@@ -5,7 +5,6 @@
         <div class="footer-buttons">
             <button>친구목록</button>
             <button>채팅방목록</button>
-            <button>설정</button>
         </div>
     </sec:authorize>
     <sec:authorize access="hasRole('admin')">
