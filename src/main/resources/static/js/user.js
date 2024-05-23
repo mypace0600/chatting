@@ -19,7 +19,6 @@ let index = {
 
     emailDuplicateCheck: function () {
         let email = $("#email").val();
-        console.log(email);
         let data = {
             email: email
         };
