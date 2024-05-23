@@ -73,7 +73,6 @@ public class MailService {
 
     public boolean checkVerifyCode(Mail mail) {
         Optional<Mail> checkResult = repository.findByVerifyCodeAndEmailAddress(mail.getVerifyCode(),mail.getEmailAddress());
-        log.debug("@@@@@@@@@@@@@@@@@@ checkResult :{}",checkResult.isPresent());
         return checkResult.isPresent();
     }
 

@@ -25,7 +25,6 @@ public class MailController {
 
     @PostMapping("/mail/check-verify-code")
     public ResponseDto<Boolean> checkVerifyCode(@RequestBody Mail mail){
-        log.debug("@@@@@@@@@@@@@@ mail :{}",mail.toString());
         boolean checkResult = mailService.checkVerifyCode(mail);
         return new ResponseDto<Boolean>(HttpStatus.OK.value(), checkResult);
     }
