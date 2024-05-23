@@ -82,7 +82,7 @@ let index = {
             contentType: "application/json; charset=utf-8",
             dataType: "json"
         }).done(function (resp) {
-            if (resp.status === 200) {
+            if (resp.status === 200 && resp.data) {
                 $("#emailVerifyCheck").val(true);
                 alert("인증번호가 확인되었습니다.");
             } else {
