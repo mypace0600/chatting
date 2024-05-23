@@ -6,9 +6,9 @@
 <div class="main-content">
     <div class="friends-list">
         <ul>
-            <li>친구 1</li>
-            <li>친구 2</li>
-            <li>친구 3</li>
+            <c:forEach var="friend" items="${friendList}">
+                <li>${friend}</li>
+            </c:forEach>
         </ul>
     </div>
 </div>
