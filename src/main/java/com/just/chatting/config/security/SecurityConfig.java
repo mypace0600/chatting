@@ -45,7 +45,7 @@ public class SecurityConfig {
                         HeadersConfigurer.FrameOptionsConfig::disable
                 ))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user/check-nickname","/mail/**","/user/check-email", "/auth/**", "/js/**", "/css/**", "/img/**", "/WEB-INF/views/**","/h2-console/**").permitAll()
+                        .requestMatchers("/","/user/check-nickname","/mail/**","/user/check-email", "/auth/**", "/js/**", "/css/**", "/img/**", "/WEB-INF/views/**","/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login

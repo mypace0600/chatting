@@ -1,4 +1,4 @@
-let index = {
+let user = {
     init: function () {
         $("#emailDuplicateCheckBtn").on("click", () => {
             this.emailDuplicateCheck();
@@ -158,4 +158,4 @@ let index = {
     }
 };
 
-index.init();
+user.init();

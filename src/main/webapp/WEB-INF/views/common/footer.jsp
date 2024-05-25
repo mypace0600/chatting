@@ -16,3 +16,4 @@
 </body>
 </html>
 <script src="/js/friend.js"></script>
+<script src="/js/common.js"></script>
