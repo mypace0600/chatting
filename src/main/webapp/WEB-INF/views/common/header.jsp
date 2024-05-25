@@ -5,10 +5,11 @@
 <header>
     <div class="headerBox">
         <button class="btn" id="sideBarBtn"><i class="bi bi-list"></i></button>
-        <button class="btn" id="profileBtn"><i class="bi bi-person-circle"></i></button>
         <sec:authorize access="isAnonymous()">
+            <button class="btn" id="profileBtn" onClick="location.href='/auth/loginForm'"><i class="bi bi-person-circle"></i></button>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
+            <button class="btn" id="profileBtn"><i class="bi bi-person-circle"></i></button>
         </sec:authorize>
     </div>
     <div class="search-bar mt-2 searchBox">
