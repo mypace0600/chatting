@@ -106,4 +106,10 @@ public class UserController {
         model.addAttribute("user",principal.getUser());
         return "user/myInfo";
     }
+
+    @GetMapping("/user/myInfo/edit")
+    public String myInfoEdit(@AuthenticationPrincipal PrincipalDetail principal, Model model){
+        model.addAttribute("user",principal.getUser());
+        return "user/editForm";
+    }
 }
