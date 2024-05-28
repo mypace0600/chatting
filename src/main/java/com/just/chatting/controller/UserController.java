@@ -2,6 +2,7 @@ package com.just.chatting.controller;
 
 import com.just.chatting.common.CamelCaseMap;
 import com.just.chatting.common.ResponseDto;
+import com.just.chatting.config.security.PrincipalDetail;
 import com.just.chatting.entity.User;
 import com.just.chatting.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,5 +99,11 @@ public class UserController {
             return new ResponseDto<>(HttpStatus.CONFLICT.value(), 2);
         }
         return new ResponseDto<>(HttpStatus.OK.value(),1);
+    }
+
+    @GetMapping("/user/myInfo")
+    public String myInfo(@AuthenticationPrincipal PrincipalDetail principal, Model model){
+        model.addAttribute("user",principal.getUser());
+        return "user/myInfo";
     }
 }

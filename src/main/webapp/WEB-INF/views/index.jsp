@@ -3,6 +3,7 @@
 
 <%@include file="common/head.jsp"%>
 <%@include file="common/header.jsp"%>
+<%@include file="common/sidebar.jsp"%>
 <div class="main-content">
     <div class="friends-list">
         <ul>

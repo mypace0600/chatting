@@ -9,7 +9,7 @@
             <button class="btn" id="profileBtn" onClick="location.href='/auth/loginForm'"><i class="bi bi-person-circle"></i></button>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
-            <button class="btn" id="profileBtn"><i class="bi bi-person-circle"></i></button>
+            <button class="btn" id="profileBtn" onClick="location.href='/user/myInfo'"><i class="bi bi-person-circle"></i></button>
         </sec:authorize>
     </div>
     <div class="search-bar mt-2 searchBox">
@@ -17,4 +17,3 @@
         <button type="button" id="searchFriendBtn">검색</button>
     </div>
 </header>
-<jsp:include page="common/sidebar.jsp"/>
