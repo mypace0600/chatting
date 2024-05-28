@@ -15,6 +15,9 @@ let user = {
         $("#joinBtn").on("click", () => {
             this.join();
         });
+        $("#editBtn").on("click",()=>{
+            this.edit();
+        })
     },
 
     emailDuplicateCheck: function () {
@@ -133,7 +136,7 @@ let user = {
 
             $.ajax({
                 type: "POST",
-                url: "/auth/joinProc",
+                url: "/auth/join",
                 data: JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -150,6 +153,42 @@ let user = {
                     alert("회원가입 실패: " + responseJSON.message);
                 } else {
                     alert("회원가입 실패: 서버 오류");
+                }
+            });
+        } else {
+            alert('모든 항목을 올바르게 입력해주세요.');
+        }
+    },
+
+    edit : function() {
+        let nicknameDuplicateCheck = $("#nicknameDuplicateCheck").val() === 'true';
+        if (nicknameDuplicateCheck) {
+            let nickName = $("#nickName").val();
+            let userId = $("#user_id").val();
+            let data = {
+                id:userId,
+                nickName: nickName
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/auth/edit",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+            }).done(function (resp) {
+                if (resp.success) {
+                    alert("회원정보 수정 성공");
+                    window.location.href = '/';
+                } else {
+                    alert("회원정보 수정 실패: " + resp.message);
+                }
+            }).fail(function (error) {
+                let responseJSON = error.responseJSON;
+                if (responseJSON && responseJSON.message) {
+                    alert("회원정보 수정 실패: " + responseJSON.message);
+                } else {
+                    alert("회원정보 수정 실패: 서버 오류");
                 }
             });
         } else {

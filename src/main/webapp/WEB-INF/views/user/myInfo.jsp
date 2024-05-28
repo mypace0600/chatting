@@ -20,7 +20,7 @@
         </div>
     </div>
     <div id="buttonBox">
-        <button type="button" onclick="location.href='/user/myInfo/edit'">edit</button>
+        <button type="button" onclick="location.href='/auth/edit'">edit</button>
         <button type="button">logout</button>
     </div>
 </div>

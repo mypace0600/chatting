@@ -38,4 +38,11 @@ public class UserService {
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Transactional
+    public void edit(User user) {
+        User findUser = userRepository.findById(user.getId()).orElseThrow(EntityNotFoundException::new);
+        findUser.setNickName(user.getNickName());
+        userRepository.save(findUser);
+    }
 }

@@ -14,10 +14,7 @@
                 <span>${user.email}</span>
             </div>
             <div class="form-group">
-                <label for="password">비밀번호</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="비밀번호를 입력해주세요" value="${user.password}"/>
-            </div>
-            <div class="form-group">
+                <input type="hidden" id="user_id" value="${user.id}"/>
                 <label for="nickName">닉네임</label>
                 <input type="text" name="nickName" id="nickName" class="form-control" placeholder="닉네임을 입력해주세요"  value="${user.nickName}"/>
                 <input type="hidden" name="nicknameDuplicateCheck" id="nicknameDuplicateCheck" value="false"/>

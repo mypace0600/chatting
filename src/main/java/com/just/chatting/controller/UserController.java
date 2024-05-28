@@ -40,16 +40,15 @@ public class UserController {
         return "user/loginForm";
     }
 
-    @GetMapping("/auth/joinForm")
+    @GetMapping("/auth/join")
     public String joinForm(Model model) {
         model.addAttribute("user",new User());
         return "user/joinForm";
     }
 
-    @PostMapping("/auth/joinProc")
+    @PostMapping("/auth/join")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> register(@RequestBody User user) {
-        log.debug("@@@@@@@@@@@@@@@@@@ user :{}", user.toString());
         Map<String, Object> response = new HashMap<>();
         try {
             User createdUser = User.createUser(user, passwordEncoder);
@@ -78,10 +77,8 @@ public class UserController {
     @PostMapping("/user/check-email")
     @ResponseBody
     public ResponseDto<Integer> checkEmail(@RequestBody CamelCaseMap map){
-        log.debug("@@@@@@@@@@@@@@@@ email :{}",map.get("email"));
         String email = String.valueOf(map.get("email"));
         Optional<User> findUser = userService.findByEmail(email);
-        log.debug("@@@@@@@@@@@@@@@@ findUser :{}",findUser);
         if(findUser.isPresent()){
             return new ResponseDto<>(HttpStatus.CONFLICT.value(), 2);
         }
@@ -91,10 +88,8 @@ public class UserController {
     @PostMapping("/user/check-nickname")
     @ResponseBody
     public ResponseDto<Integer> checkNickname(@RequestBody CamelCaseMap map){
-        log.debug("@@@@@@@@@@@@@@@@ nickName :{}",map.get("nickName"));
         String nickName = String.valueOf(map.get("nickName"));
         Optional<User> findUser = userService.findByNickName(nickName);
-        log.debug("@@@@@@@@@@@@@@@@ findUser :{}",findUser);
         if(findUser.isPresent()){
             return new ResponseDto<>(HttpStatus.CONFLICT.value(), 2);
         }
@@ -107,9 +102,24 @@ public class UserController {
         return "user/myInfo";
     }
 
-    @GetMapping("/user/myInfo/edit")
-    public String myInfoEdit(@AuthenticationPrincipal PrincipalDetail principal, Model model){
+    @GetMapping("/auth/edit")
+    public String editForm(@AuthenticationPrincipal PrincipalDetail principal, Model model){
         model.addAttribute("user",principal.getUser());
         return "user/editForm";
+    }
+
+    @PostMapping("/auth/edit")
+    @ResponseBody
+    public ResponseEntity<CamelCaseMap> editProc(@RequestBody User user){
+        CamelCaseMap response = new CamelCaseMap();
+        try {
+            userService.edit(user);
+            response.put("success", true);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 }
