@@ -10,7 +10,7 @@
                 <div>공지사항</div>
                 <div>질문과 답</div>
             </div>
-            <button type="button" onclick="" id="closeSideBarBtn">닫기</button>
+            <button type="button" id="closeSideBarBtn">닫기</button>
         </div>
         <div id="otherPart"></div>
     </div>
