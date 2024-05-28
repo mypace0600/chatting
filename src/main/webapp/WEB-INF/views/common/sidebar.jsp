@@ -4,10 +4,13 @@
 <div id="sideBarContainer" class="nonActiveView">
     <div id="sideBarBox">
         <div id="sideBar">
-            <div>내가받은요청</div>
-            <div>내가보낸요청</div>
-            <div>공지사항</div>
-            <div>질문과 답</div>
+            <div>
+                <div>내가받은요청</div>
+                <div>내가보낸요청</div>
+                <div>공지사항</div>
+                <div>질문과 답</div>
+            </div>
+            <button type="button" onclick="" id="closeSideBarBtn">닫기</button>
         </div>
         <div id="otherPart"></div>
     </div>
