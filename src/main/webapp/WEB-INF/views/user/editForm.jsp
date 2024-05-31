@@ -10,7 +10,7 @@
         <div>회원정보 수정 화면입니다.</div>
         <form id="editForm">
             <div class="form-group">
-                <label for="email">이메일 주소</label>
+                <span>이메일 주소</span>
                 <span>${user.email}</span>
             </div>
             <div class="form-group">
