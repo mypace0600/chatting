@@ -4,6 +4,6 @@
 <body>
 <header>
     <div class="headerBox">
-        <button class="btn" id="goBackBtn"><i class="bi bi-arrow-left"></i></button>
+        <button class="btn" onclick="location.href='/';"><i class="bi bi-arrow-left"></i></button>
     </div>
 </header>
