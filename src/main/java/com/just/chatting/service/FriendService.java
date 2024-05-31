@@ -33,4 +33,16 @@ public class FriendService {
         friend.setAreWeFriend(false);
         friendRepository.save(friend);
     }
+
+    public List<Friend> findAllByToUser(User user) {
+        List<Friend> result = friendRepository.findAllByToUser(user);
+        return result;
+    }
+
+    @Transactional
+    public void yesWeAreFriend(User user, int fromUserId) {
+        Friend friend = friendRepository.findByToUserAndFromUser(user.getId(),fromUserId).orElseThrow(EntityNotFoundException::new);
+        friend.setAreWeFriend(true);
+        friendRepository.save(friend);
+    }
 }

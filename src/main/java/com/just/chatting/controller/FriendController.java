@@ -16,11 +16,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -54,4 +57,27 @@ public class FriendController {
         }
         return ResponseEntity.ok(resultBox);
     }
+
+    @GetMapping("/friend/to-me-list")
+    public String receivedList(@AuthenticationPrincipal PrincipalDetail principal, Model model){
+        List<Friend> friendList = friendService.findAllByToUser(principal.getUser());
+        model.addAttribute("friendList",friendList);
+        return "friend/toMeList";
+    }
+
+    @PostMapping("/friend/approve")
+    @ResponseBody
+    public ResponseEntity<CamelCaseMap> approveFriend(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody FriendDto friendDto){
+        CamelCaseMap resultBox = new CamelCaseMap();
+        User user = principal.getUser();
+        try {
+            friendService.yesWeAreFriend(user, friendDto.getFromUserId());
+            resultBox.put("success",true);
+        } catch (Exception e){
+            e.printStackTrace();
+            resultBox.put("success",false);
+        }
+        return ResponseEntity.ok(resultBox);
+    }
+
 }

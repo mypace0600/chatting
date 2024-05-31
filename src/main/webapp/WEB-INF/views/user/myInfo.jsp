@@ -21,7 +21,7 @@
     </div>
     <div id="buttonBox">
         <button type="button" onclick="location.href='/auth/edit'">edit</button>
-        <button type="button">logout</button>
+        <button type="button" onclick="location.href='/auth/logout'">logout</button>
     </div>
 </div>
 <script src="/js/user.js"></script>

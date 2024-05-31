@@ -7,6 +7,10 @@ let friendIndex = {
         $("#askFriendBtn").on("click",()=>{
             this.askFriend();
         });
+        $(".friends-list").on("click", ".okBtn", function() {
+            let id = $(this).closest("li").find(".fromUserId").val();
+            friendIndex.approveFriend(id);
+        });
     },
 
     searchFriend : function () {
@@ -26,17 +30,17 @@ let friendIndex = {
                 alert("해당 닉네임을 가진 사용자가 없습니다.");
             } else {
 
-                var modal = document.getElementById("myModal");
-                var searchedUserNickName = document.getElementById("searchedUserNickName");
+                let modal = document.getElementById("myModal");
+                let searchedUserNickName = document.getElementById("searchedUserNickName");
                 searchedUserNickName.textContent = "닉네임: " + resp.searchedUser.nickName;
-                var searchedUserEmail = document.getElementById("searchedUserEmail");
+                let searchedUserEmail = document.getElementById("searchedUserEmail");
                 searchedUserEmail.textContent = "이메일: " + resp.searchedUser.email;
-                var userId = document.getElementById("userId");
+                let userId = document.getElementById("userId");
                 userId.value = resp.searchedUser.id;
 
                 modal.style.display = "block";
 
-                var span = document.getElementsByClassName("close")[0];
+                let span = document.getElementsByClassName("close")[0];
                 span.onclick = function() {
                     modal.style.display = "none";
                 }
@@ -48,7 +52,6 @@ let friendIndex = {
 
     askFriend : function () {
         let userId = $("#userId").val();
-        console.log(userId);
         let data = {
             toUserId : userId
         };
@@ -64,6 +67,29 @@ let friendIndex = {
                 alert("친구 신청 성공");
             } else {
                 alert("친구 신청 실패")
+            }
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+
+    approveFriend : function (id) {
+        let userId = parseInt(id);
+        let data = {
+            fromUserId : userId
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/friend/approve",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function (resp) {
+            if(resp.success === true) {
+                alert("친구 승인 완료");
+            } else {
+                alert("친구 승인 실패")
             }
         }).fail(function (error) {
             alert(JSON.stringify(error));

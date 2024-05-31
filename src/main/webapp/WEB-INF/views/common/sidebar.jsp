@@ -5,10 +5,10 @@
     <div id="sideBarBox">
         <div id="sideBar">
             <div>
-                <div>내가받은요청</div>
-                <div>내가보낸요청</div>
-                <div>공지사항</div>
-                <div>질문과 답</div>
+                <div><a href="/friend/to-me-list">내가받은요청</a></div>
+                <div><a href="/friend/from-me-list">내가보낸요청</a></div>
+                <div><a href="/notice">공지사항</a></div>
+                <div><a href="/qna">질문과 답</a></div>
             </div>
             <button type="button" id="closeSideBarBtn">닫기</button>
         </div>
