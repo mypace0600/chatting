@@ -160,13 +160,13 @@ let user = {
         }
     },
 
-    edit : function() {
+    edit: function() {
         let nicknameDuplicateCheck = $("#nicknameDuplicateCheck").val() === 'true';
         if (nicknameDuplicateCheck) {
             let nickName = $("#nickName").val();
             let userId = $("#user_id").val();
             let data = {
-                id:userId,
+                id: userId,
                 nickName: nickName
             };
 
@@ -176,14 +176,14 @@ let user = {
                 data: JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-            }).done(function (resp) {
+            }).done(function(resp) {
                 if (resp.success) {
                     alert("회원정보 수정 성공");
-                    window.location.href = '/';
+                    window.location.href = "/user/myInfo";
                 } else {
                     alert("회원정보 수정 실패: " + resp.message);
                 }
-            }).fail(function (error) {
+            }).fail(function(error) {
                 let responseJSON = error.responseJSON;
                 if (responseJSON && responseJSON.message) {
                     alert("회원정보 수정 실패: " + responseJSON.message);
@@ -195,6 +195,7 @@ let user = {
             alert('모든 항목을 올바르게 입력해주세요.');
         }
     }
+
 };
 
 user.init();

@@ -1,10 +1,13 @@
 package com.just.chatting.service;
 
+import com.just.chatting.config.security.PrincipalDetail;
 import com.just.chatting.entity.User;
 import com.just.chatting.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,10 +42,21 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public Optional<User> findById(int id) {
+        return userRepository.findById(id);
+    }
+
     @Transactional
-    public void edit(User user) {
+    public User edit(User user) {
         User findUser = userRepository.findById(user.getId()).orElseThrow(EntityNotFoundException::new);
         findUser.setNickName(user.getNickName());
-        userRepository.save(findUser);
+        User updatedUser = userRepository.save(findUser);
+
+        PrincipalDetail principalDetail = new PrincipalDetail(updatedUser);
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(principalDetail, null, principalDetail.getAuthorities())
+        );
+
+        return updatedUser;
     }
 }

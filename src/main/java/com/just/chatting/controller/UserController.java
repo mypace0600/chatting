@@ -98,7 +98,8 @@ public class UserController {
 
     @GetMapping("/user/myInfo")
     public String myInfo(@AuthenticationPrincipal PrincipalDetail principal, Model model){
-        model.addAttribute("user",principal.getUser());
+        User currentUser = userService.findById(principal.getUser().getId()).orElseThrow(EntityNotFoundException::new);
+        model.addAttribute("user", currentUser);
         return "user/myInfo";
     }
 
@@ -113,8 +114,9 @@ public class UserController {
     public ResponseEntity<CamelCaseMap> editProc(@RequestBody User user){
         CamelCaseMap response = new CamelCaseMap();
         try {
-            userService.edit(user);
+            User editedUser = userService.edit(user);
             response.put("success", true);
+            response.put("user", editedUser);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("success", false);

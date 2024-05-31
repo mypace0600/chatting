@@ -11,10 +11,10 @@
             <input type="hidden" id="userId" value="${user.id}"/>
             <div class="infoDetail" id="nicknameBox">
                 <span id="labelForNickname">nickname : </span>
-                <span>${user.nickName}</span>
+                <span id="currentNickname">${user.nickName}</span>
             </div>
             <div class="infoDetail"  id="emailBox">
-                <span id="labelForNickname">email : </span>
+                <span id="labelForEmail">email : </span>
                 <span>${user.email}</span>
             </div>
         </div>
