@@ -31,7 +31,8 @@ public class FriendRepositoryCustomImpl implements FriendRepositoryCustom{
                 .from(QFriend.friend)
                 .innerJoin(QFriend.friend.toUser).fetchJoin()
                 .innerJoin(QFriend.friend.fromUser).fetchJoin()
-                .where(QFriend.friend.toUser.eq(user))
+                .where(QFriend.friend.toUser.eq(user)
+                        .and(QFriend.friend.areWeFriend.isFalse()))
                 .orderBy(QFriend.friend.id.desc())
                 .fetch();
     }

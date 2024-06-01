@@ -8,7 +8,10 @@
     <div class="friends-list">
         <ul>
             <c:forEach var="friend" items="${friendList}">
-                <li>${friend}</li>
+                <li id="friend${friend.toUser.id}">
+                    <input type="hidden" class="fromUserId", value="${friend.toUser.id}">
+                    <span>${friend.toUser.nickName}</span>
+                </li>
             </c:forEach>
         </ul>
     </div>

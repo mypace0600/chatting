@@ -124,7 +124,7 @@ let user = {
         let emailVerifyCheck = $("#emailVerifyCheck").val() === 'true';
         let nicknameDuplicateCheck = $("#nicknameDuplicateCheck").val() === 'true';
 
-        if (emailDuplicateCheck && emailVerifyCheck && nicknameDuplicateCheck) {
+        if (true) {
             let email = $("#email").val();
             let password = $("#password").val();
             let nickName = $("#nickName").val();

@@ -11,6 +11,10 @@ let friendIndex = {
             let id = $(this).closest("li").find(".fromUserId").val();
             friendIndex.approveFriend(id);
         });
+        $(".friends-list").on("click", ".friend", function () {
+            let id = $(this).find(".toUserId").val();
+            friendIndex.chatEnterToggle(id);
+        });
     },
 
     searchFriend : function () {
@@ -88,12 +92,16 @@ let friendIndex = {
         }).done(function (resp) {
             if(resp.success === true) {
                 alert("친구 승인 완료");
+                location.reload();
             } else {
                 alert("친구 승인 실패")
             }
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
+    },
+    chatEnterToggle : function (id) {
+
     }
 }
 
