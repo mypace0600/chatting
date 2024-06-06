@@ -80,4 +80,25 @@ public class FriendController {
         return ResponseEntity.ok(resultBox);
     }
 
+    @GetMapping("/friend/from-me-list")
+    public String requestedList(@AuthenticationPrincipal PrincipalDetail principal, Model model){
+        List<Friend> friendList = friendService.findAllByFromUser(principal.getUser());
+        model.addAttribute("friendList",friendList);
+        return "friend/fromMeList";
+    }
+
+    @PostMapping("/friend/approve-cancel")
+    @ResponseBody
+    public ResponseEntity<CamelCaseMap> approveCancelFriend(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody FriendDto friendDto){
+        CamelCaseMap resultBox = new CamelCaseMap();
+        User user = principal.getUser();
+        try {
+            friendService.yesWeAreFriend(user, friendDto.getFromUserId());
+            resultBox.put("success",true);
+        } catch (Exception e){
+            e.printStackTrace();
+            resultBox.put("success",false);
+        }
+        return ResponseEntity.ok(resultBox);
+    }
 }

@@ -45,4 +45,9 @@ public class FriendService {
         friend.setAreWeFriend(true);
         friendRepository.save(friend);
     }
+
+    public List<Friend> findAllByFromUser(User user) {
+        List<Friend> result = friendRepository.findAllByFromUser(user);
+        return result;
+    }
 }

@@ -37,6 +37,18 @@ public class FriendRepositoryCustomImpl implements FriendRepositoryCustom{
                 .fetch();
     }
 
+    public List<Friend> findAllByFromUser(User user){
+        return queryFactory
+                .select(QFriend.friend)
+                .from(QFriend.friend)
+                .innerJoin(QFriend.friend.toUser).fetchJoin()
+                .innerJoin(QFriend.friend.fromUser).fetchJoin()
+                .where(QFriend.friend.fromUser.eq(user)
+                        .and(QFriend.friend.areWeFriend.isFalse()))
+                .orderBy(QFriend.friend.id.desc())
+                .fetch();
+    }
+
 
     public Optional<Friend> findByToUserAndFromUser(Integer toUserId, int fromUserId) {
 
