@@ -15,8 +15,8 @@ let friendIndex = {
             let id = $(this).closest("li").find(".toUserId").val();
             friendIndex.cancelRequestFriend(id);
         });
-        $(".friends-list").on("click", ".friend", function () {
-            let id = $(this).find(".toUserId").val();
+        $(".friends-list").on("click", ".chatBtn", function() {
+            let id = $(this).closest("li").find(".toUserId").val();
             friendIndex.chatEnterToggle(id);
         });
     },
