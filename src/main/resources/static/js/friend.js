@@ -11,6 +11,10 @@ let friendIndex = {
             let id = $(this).closest("li").find(".fromUserId").val();
             friendIndex.approveFriend(id);
         });
+        $(".friends-list").on("click", ".cancelBtn", function() {
+            let id = $(this).closest("li").find(".toUserId").val();
+            friendIndex.cancelRequestFriend(id);
+        });
         $(".friends-list").on("click", ".friend", function () {
             let id = $(this).find(".toUserId").val();
             friendIndex.chatEnterToggle(id);
@@ -95,6 +99,29 @@ let friendIndex = {
                 location.reload();
             } else {
                 alert("친구 승인 실패")
+            }
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    cancelRequestFriend:function (id){
+        let userId = parseInt(id);
+        let data = {
+            toUserId : userId
+        };
+
+        $.ajax({
+            type:'POST',
+            url: "/friend/request-cancel",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType:"json"
+        }).done(function (resp){
+            if(resp.success === true) {
+                alert("친구 요청 삭제 완료");
+                location.reload();
+            } else {
+                alert("친구 요청 삭제 실패")
             }
         }).fail(function (error) {
             alert(JSON.stringify(error));

@@ -9,7 +9,7 @@
         <ul>
             <c:forEach var="friend" items="${friendList}">
                 <li>
-                    <input type="hidden" class="fromUserId", value="${friend.toUser.id}">
+                    <input type="hidden" class="toUserId", value="${friend.toUser.id}">
                     <span>${friend.toUser.nickName}</span>
                     <button type="button" class="cancelBtn">Cancel</button>
                 </li>

@@ -50,4 +50,12 @@ public class FriendService {
         List<Friend> result = friendRepository.findAllByFromUser(user);
         return result;
     }
+
+    @Transactional
+    public void cancelRequest(User user, int toUserId) {
+        Friend friend = friendRepository.findByToUserAndFromUser(toUserId,user.getId()).orElseThrow(EntityNotFoundException::new);
+        if(!friend.isAreWeFriend()){
+            friendRepository.deleteById(friend.getId());
+        }
+    }
 }
