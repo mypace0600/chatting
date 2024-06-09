@@ -7,6 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "tb_chat_room_user")
 public class ChatRoomUser {
 
     @Id

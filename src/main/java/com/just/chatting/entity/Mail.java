@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 @ToString
+@Table(name = "tb_mail")
 public class Mail {
 
     @Id
