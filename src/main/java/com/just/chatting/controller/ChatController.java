@@ -10,10 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -30,6 +27,7 @@ public class ChatController {
         User loginUser = principal.getUser();
         Optional<ChatRoom> chatRoom = chatService.findChatRoom(loginUser.getId(),chatRoomDto.getFromUserId());
         if(chatRoom.isPresent()){
+            resultBox.put("success",true);
             resultBox.put("chatRoomId",chatRoom.get().getId());
         } else {
             resultBox.put("chatRoomId","");
@@ -37,12 +35,19 @@ public class ChatController {
         return ResponseEntity.ok(resultBox);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/room")
     public ResponseEntity<CamelCaseMap> createChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
         ChatRoom chatRoom = chatService.createChatRoom(chatRoomDto.getFromUserId(),principal.getUser().getId());
         CamelCaseMap resultBox = new CamelCaseMap();
         resultBox.put("chatRoomId",chatRoom.getId());
         return ResponseEntity.ok(resultBox);
     }
+
+//    @GetMapping("/room/{chatRoomId}")
+//    public String chatRoom(@PathVariable("chatRoomId")Integer chatRoomId, @AuthenticationPrincipal PrincipalDetail principal){
+//        ChatRoom chatRoom = chatService.findChatRoomById(chatRoomId).orElseThrow(EntityNotFoundException::new);
+//
+//    }
+
 
 }

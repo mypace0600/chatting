@@ -18,7 +18,7 @@ public class Mail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 500, unique = false)
     private String emailAddress;

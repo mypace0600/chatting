@@ -19,4 +19,7 @@ public class ChatRoom {
 
     @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY)
     private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY)
+    private List<ChatMessage> chatMessageList = new ArrayList<>();
 }

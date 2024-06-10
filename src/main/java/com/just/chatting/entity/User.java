@@ -38,6 +38,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
+    private List<ChatMessage> chatMessageList = new ArrayList<>();
+
     public static User createUser(User user, BCryptPasswordEncoder passwordEncoder) {
         return User.builder()
                 .email(user.getEmail())

@@ -12,7 +12,7 @@ public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "friend_id")
-    private int id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "from_user_id", referencedColumnName = "id", nullable = false)

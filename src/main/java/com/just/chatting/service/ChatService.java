@@ -43,4 +43,8 @@ public class ChatService {
 
         return chatRoom;
     }
+
+    public Optional<ChatRoom> findChatRoomById(Integer chatRoomId) {
+        return chatRoomRepository.findById(chatRoomId);
+    }
 }
