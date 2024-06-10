@@ -1,0 +1,21 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+
+<%@include file="../common/head.jsp"%>
+<%@include file="../common/goBackHeader.jsp"%>
+<%@include file="../common/sidebar.jsp"%>
+<div class="main-content">
+    <div class="friends-list">
+        채팅방입니다.
+        <%-- <ul>
+            <c:forEach var="friend" items="${friendList}">
+                <li class="friend">
+                    <input type="hidden" class="toUserId" value="${friend.toUser.id}">
+                    <span>${friend.toUser.nickName}</span>
+                    <button type="button" class="chatBtn">chat</button>
+                </li>
+            </c:forEach>
+        </ul> --%>
+    </div>
+</div>
+

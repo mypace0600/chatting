@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -22,4 +24,6 @@ public class ChatMessage {
     private User sender;
 
     private String content;
+
+    private LocalDateTime sendDt;
 }

@@ -25,7 +25,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql' // Postgres runtime dependency
 	annotationProcessor 'org.projectlombok:lombok'
@@ -54,6 +53,9 @@ dependencies {
 
 	// redis
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.2.2'
+
+	// websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {
