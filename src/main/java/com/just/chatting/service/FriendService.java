@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -20,8 +22,20 @@ public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
 
-    public List<Friend> findAllFriendsOfMine(PrincipalDetail principal) {
-        return friendRepository.findAllFriendsOfMine(principal.getUser());
+    public List<User> findAllFriendsOfMine(PrincipalDetail principal) {
+        List<Friend> friendList = friendRepository.findAllFriendsOfMine(principal.getUser());
+        List<User> result = new ArrayList<>();
+        for(Friend f : friendList){
+            if(f.getFromUser().getId().equals(principal.getUser().getId())){
+                User toUser = f.getToUser();
+                result.add(toUser);
+            } else if(f.getToUser().getId().equals(principal.getUser().getId())){
+                User fromUser = f.getFromUser();
+                result.add(fromUser);
+            }
+        }
+        result.sort(Comparator.comparing(User::getNickName));
+        return result;
     }
 
     @Transactional

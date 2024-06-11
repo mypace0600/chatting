@@ -7,10 +7,10 @@
 <div class="main-content">
     <div class="friends-list">
         <ul>
-            <c:forEach var="friend" items="${friendList}">
-                <li id="friend${friend.toUser.id}">
-                    <input type="hidden" class="toUserId", value="${friend.toUser.id}">
-                    <span>${friend.toUser.nickName}</span>
+            <c:forEach var="user" items="${friendList}">
+                <li>
+                    <input type="hidden" class="toUserId", value="${user.id}">
+                    <span>${user.nickName}</span>
                     <button type="button" class="chatBtn">chat</button>
                 </li>
             </c:forEach>
