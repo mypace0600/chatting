@@ -8,4 +8,5 @@ import lombok.Setter;
 public class ChatRoomDto {
     private Integer chatRoomId;
     private Integer fromUserId;
+    private Integer toUserId;
 }

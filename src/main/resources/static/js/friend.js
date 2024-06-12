@@ -128,8 +128,9 @@ let friendIndex = {
         });
     },
     chatEnterToggle: function (id) {
-        let data = { toUserId: parseInt(id) };
 
+
+        let data = { toUserId: id };
         // 채팅방 확인 요청을 Promise로 처리
         function checkChatRoom() {
             return new Promise((resolve, reject) => {

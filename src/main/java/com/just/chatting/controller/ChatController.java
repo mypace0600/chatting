@@ -5,11 +5,11 @@ import com.just.chatting.config.security.PrincipalDetail;
 import com.just.chatting.dto.ChatRoomDto;
 import com.just.chatting.entity.ChatMessage;
 import com.just.chatting.entity.ChatRoom;
-import com.just.chatting.entity.ChatRoomUser;
 import com.just.chatting.entity.User;
 import com.just.chatting.service.ChatService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ChatController {
@@ -32,7 +32,8 @@ public class ChatController {
     public ResponseEntity<CamelCaseMap> checkChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
         CamelCaseMap resultBox = new CamelCaseMap();
         User loginUser = principal.getUser();
-        Optional<ChatRoom> chatRoom = chatService.findChatRoom(loginUser.getId(),chatRoomDto.getFromUserId());
+        log.debug("@@@@@@@@@@@@@@@@@@ chatRoomDto.getToUserId() : {}", chatRoomDto.getToUserId());
+        Optional<ChatRoom> chatRoom = chatService.findChatRoom(chatRoomDto.getToUserId(),loginUser.getId());
         if(chatRoom.isPresent()){
             resultBox.put("success",true);
             resultBox.put("chatRoomId",chatRoom.get().getId());
@@ -45,9 +46,10 @@ public class ChatController {
     @PostMapping("/chat/room")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> createChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
-        ChatRoom chatRoom = chatService.createChatRoom(chatRoomDto.getFromUserId(),principal.getUser().getId());
+        ChatRoom chatRoom = chatService.createChatRoom(chatRoomDto.getToUserId(),principal.getUser().getId());
         CamelCaseMap resultBox = new CamelCaseMap();
         resultBox.put("chatRoomId",chatRoom.getId());
+        resultBox.put("success",true);
         return ResponseEntity.ok(resultBox);
     }
 

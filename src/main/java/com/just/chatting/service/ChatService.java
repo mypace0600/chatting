@@ -8,13 +8,15 @@ import com.just.chatting.repository.ChatMessageRepository;
 import com.just.chatting.repository.ChatRoomRepository;
 import com.just.chatting.repository.ChatRoomUserRepository;
 import com.just.chatting.repository.UserRepository;
-import jakarta.persistence.EntityExistsException;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatService {
@@ -27,7 +29,7 @@ public class ChatService {
         return chatRoomRepository.findByUsers(toUserId,fromUserId);
     }
 
-    public ChatRoom createChatRoom(Integer fromUserId, Integer toUserId) {
+    public ChatRoom createChatRoom(Integer toUserId,Integer fromUserId) {
         User fromUser = userRepository.findById(fromUserId).orElseThrow(EntityNotFoundException::new);
         User toUser = userRepository.findById(toUserId).orElseThrow(EntityNotFoundException::new);
 
@@ -37,11 +39,13 @@ public class ChatService {
         ChatRoomUser chatRoomUserFrom = new ChatRoomUser();
         chatRoomUserFrom.setChatRoom(chatRoom);
         chatRoomUserFrom.setUser(fromUser);
+        log.info("@@@@@@@@@ chatRoomUserFrom :{}",chatRoomUserFrom.toString());
         chatRoomUserRepository.save(chatRoomUserFrom);
 
         ChatRoomUser chatRoomUserTo = new ChatRoomUser();
         chatRoomUserFrom.setChatRoom(chatRoom);
         chatRoomUserFrom.setUser(toUser);
+        log.info("@@@@@@@@@ chatRoomUserTo :{}",chatRoomUserTo.toString());
         chatRoomUserRepository.save(chatRoomUserTo);
 
         return chatRoom;
