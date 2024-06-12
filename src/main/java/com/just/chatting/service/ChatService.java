@@ -25,7 +25,7 @@ public class ChatService {
     private final ChatRoomUserRepository chatRoomUserRepository;
     private final ChatMessageRepository chatMessageRepository;
 
-    public Optional<ChatRoom> findChatRoom(Integer toUserId, Integer fromUserId) {
+    public Optional<ChatRoom> findChatRoomByUsers(Integer toUserId, Integer fromUserId) {
         return chatRoomRepository.findByUsers(toUserId,fromUserId);
     }
 
@@ -39,13 +39,11 @@ public class ChatService {
         ChatRoomUser chatRoomUserFrom = new ChatRoomUser();
         chatRoomUserFrom.setChatRoom(chatRoom);
         chatRoomUserFrom.setUser(fromUser);
-        log.info("@@@@@@@@@ chatRoomUserFrom :{}",chatRoomUserFrom.toString());
         chatRoomUserRepository.save(chatRoomUserFrom);
 
         ChatRoomUser chatRoomUserTo = new ChatRoomUser();
-        chatRoomUserFrom.setChatRoom(chatRoom);
-        chatRoomUserFrom.setUser(toUser);
-        log.info("@@@@@@@@@ chatRoomUserTo :{}",chatRoomUserTo.toString());
+        chatRoomUserTo.setChatRoom(chatRoom);
+        chatRoomUserTo.setUser(toUser);
         chatRoomUserRepository.save(chatRoomUserTo);
 
         return chatRoom;
