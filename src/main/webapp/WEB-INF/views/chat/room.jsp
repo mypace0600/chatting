@@ -5,17 +5,18 @@
 <%@include file="../common/goBackHeader.jsp"%>
 <%@include file="../common/sidebar.jsp"%>
 <div class="main-content">
-    <div class="friends-list">
-        채팅방입니다.
-        <%-- <ul>
-            <c:forEach var="friend" items="${friendList}">
-                <li class="friend">
-                    <input type="hidden" class="toUserId" value="${friend.toUser.id}">
-                    <span>${friend.toUser.nickName}</span>
-                    <button type="button" class="chatBtn">chat</button>
-                </li>
-            </c:forEach>
-        </ul> --%>
+    <div class="chat-container">
+        <div class="message-list-box" id="messageListBox">
+            <ul class="message-list">
+            </ul>
+        </div>
+        <div class="message-input-box">
+            <div class="message-input-wrapper">
+                <textarea id="messageInput" placeholder="메시지를 입력하세요." rows="3"></textarea>
+                <button id="sendButton">전송</button>
+            </div>
+        </div>
     </div>
 </div>
+<script src="/js/chat.js"></script>
 
