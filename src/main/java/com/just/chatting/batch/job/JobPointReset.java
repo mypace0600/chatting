@@ -1,6 +1,9 @@
 package com.just.chatting.batch.job;
 
+import com.just.chatting.batch.model.ScheduleLogModel;
+import com.just.chatting.batch.model.ScheduleModel;
 import com.just.chatting.batch.service.JobPointResetService;
+import com.just.chatting.batch.service.ScheduleTaskService;
 import com.just.chatting.common.Constant;
 import io.netty.util.internal.StringUtil;
 import jakarta.annotation.Resource;
@@ -21,12 +24,13 @@ public class JobPointReset extends QuartzJobBean {
     @Resource
     private JobPointResetService service;
 
+
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         String resultCode = "No";
         String errorMessage = "";
 
-        ScheduleModel model = schedulService.selectSchedule("POINT_RESET");
+        ScheduleModel model = scheduleService.selectSchedule("POINT_RESET");
         model.setServerIp(util.getServerIP());
         int lock = 0;
 
