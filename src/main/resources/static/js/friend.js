@@ -11,8 +11,12 @@ let friendIndex = {
             let id = $(this).closest("li").find(".fromUserId").val();
             friendIndex.approveFriend(id);
         });
-        $(".friends-list").on("click", ".friend", function () {
-            let id = $(this).find(".toUserId").val();
+        $(".friends-list").on("click", ".cancelBtn", function() {
+            let id = $(this).closest("li").find(".toUserId").val();
+            friendIndex.cancelRequestFriend(id);
+        });
+        $(".friends-list").on("click", ".chatBtn", function() {
+            let id = $(this).closest("li").find(".toUserId").val();
             friendIndex.chatEnterToggle(id);
         });
     },
@@ -100,9 +104,88 @@ let friendIndex = {
             alert(JSON.stringify(error));
         });
     },
-    chatEnterToggle : function (id) {
+    cancelRequestFriend:function (id){
+        let userId = parseInt(id);
+        let data = {
+            toUserId : userId
+        };
 
+        $.ajax({
+            type:'POST',
+            url: "/friend/request-cancel",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType:"json"
+        }).done(function (resp){
+            if(resp.success === true) {
+                alert("친구 요청 삭제 완료");
+                location.reload();
+            } else {
+                alert("친구 요청 삭제 실패")
+            }
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    chatEnterToggle: function (id) {
+        let data = { toUserId: id };
+        // 채팅방 확인 요청을 Promise로 처리
+        function checkChatRoom() {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: 'POST',
+                    url: "/chat/check",
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                }).done(function (resp) {
+                    resolve(resp);
+                }).fail(function (error) {
+                    reject(error);
+                });
+            });
+        }
+
+        // 채팅방 생성 요청을 Promise로 처리
+        function createChatRoom() {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: 'POST',
+                    url: "/chat/room",
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                }).done(function (resp) {
+                    resolve(resp);
+                }).fail(function (error) {
+                    reject(error);
+                });
+            });
+        }
+
+        // 채팅방 확인 후 처리
+        checkChatRoom().then(resp => {
+            if (resp.success === true) {
+                let chatRoomId = resp.chatRoomId;
+                location.href = "/chat/room/" + chatRoomId;
+            } else {
+                // 채팅방이 없을 경우, 새로 생성
+                return createChatRoom();
+            }
+        }).then(createResp => {
+            if (createResp) { // createResp가 undefined가 아닌 경우 처리
+                if (createResp.success === true) {
+                    let chatRoomId = createResp.chatRoomId;
+                    location.href = "/chat/room/" + chatRoomId;
+                } else {
+                    alert("채팅방 생성 실패");
+                }
+            }
+        }).catch(error => {
+            alert("오류 발생: " + JSON.stringify(error));
+        });
     }
+
 }
 
 friendIndex.init();

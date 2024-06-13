@@ -13,11 +13,12 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 @ToString
+@Table(name = "tb_mail")
 public class Mail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 500, unique = false)
     private String emailAddress;

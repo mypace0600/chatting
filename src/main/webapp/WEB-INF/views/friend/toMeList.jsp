@@ -12,7 +12,6 @@
                     <input type="hidden" class="fromUserId", value="${friend.fromUser.id}">
                     <span>${friend.fromUser.nickName}</span>
                     <button type="button" class="okBtn">OK</button>
-                    <button type="button" class="noBtn">NO</button>
                 </li>
             </c:forEach>
         </ul>

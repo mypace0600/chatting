@@ -101,4 +101,19 @@ public class FriendController {
         }
         return ResponseEntity.ok(resultBox);
     }
+
+    @PostMapping("/friend/request-cancel")
+    @ResponseBody
+    public ResponseEntity<CamelCaseMap> requestCancelFriend(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody FriendDto friendDto){
+        CamelCaseMap resultBox = new CamelCaseMap();
+        User user = principal.getUser();
+        try {
+            friendService.cancelRequest(user, friendDto.getToUserId());
+            resultBox.put("success",true);
+        } catch (Exception e){
+            e.printStackTrace();
+            resultBox.put("success",false);
+        }
+        return ResponseEntity.ok(resultBox);
+    }
 }

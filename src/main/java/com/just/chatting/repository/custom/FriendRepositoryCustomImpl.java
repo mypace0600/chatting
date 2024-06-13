@@ -20,8 +20,9 @@ public class FriendRepositoryCustomImpl implements FriendRepositoryCustom{
         return queryFactory
                 .select(QFriend.friend)
                 .from(QFriend.friend)
-                .innerJoin(QFriend.friend.fromUser).fetchJoin()
-                .where(QFriend.friend.areWeFriend.eq(true))
+                .where(QFriend.friend.areWeFriend.eq(true)
+                        .and((QFriend.friend.fromUser.id.eq(user.getId()))
+                                .or(QFriend.friend.toUser.id.eq(user.getId()))))
                 .fetch();
     }
 

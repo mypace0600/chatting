@@ -1,0 +1,12 @@
+package com.just.chatting.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ChatRoomDto {
+    private Integer chatRoomId;
+    private Integer fromUserId;
+    private Integer toUserId;
+}

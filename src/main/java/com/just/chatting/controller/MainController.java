@@ -2,6 +2,7 @@ package com.just.chatting.controller;
 
 import com.just.chatting.config.security.PrincipalDetail;
 import com.just.chatting.entity.Friend;
+import com.just.chatting.entity.User;
 import com.just.chatting.service.FriendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,7 +22,7 @@ public class MainController {
     public String index(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof PrincipalDetail principalDetail) {
-            List<Friend> friendList = friendService.findAllFriendsOfMine(principalDetail);
+            List<User> friendList = friendService.findAllFriendsOfMine(principalDetail);
             Integer friendCount = friendList.size();
             model.addAttribute("friendList", friendList);
             model.addAttribute("friendCount", friendCount);

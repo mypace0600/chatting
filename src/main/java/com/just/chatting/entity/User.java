@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,13 +27,19 @@ public class User {
 
     private String nickName;
 
-    @OneToMany(mappedBy = "fromUser")
+    @OneToMany(mappedBy = "fromUser", fetch = FetchType.LAZY)
     private List<Friend> friendsSent;
 
-    @OneToMany(mappedBy = "toUser")
+    @OneToMany(mappedBy = "toUser", fetch = FetchType.LAZY)
     private List<Friend> friendsReceived;
 
     private String roleType;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
+    private List<ChatMessage> chatMessageList = new ArrayList<>();
 
     public static User createUser(User user, BCryptPasswordEncoder passwordEncoder) {
         return User.builder()
