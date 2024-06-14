@@ -1,9 +1,9 @@
 package com.just.chatting.batch.service;
 
+import com.just.chatting.batch.mapper.ScheduleMapper;
 import com.just.chatting.batch.model.ScheduleLogModel;
 import com.just.chatting.batch.model.ScheduleModel;
 import com.just.chatting.common.Constant;
-import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +24,6 @@ public class ScheduleService {
     private final ScheduleMapper mapper;
 
     private final StdScheduler scheduler;
-
-    private final CodeMapper codeMapper;
 
     /*
      *  스케줄 JobDetail 생성
@@ -163,15 +161,15 @@ public class ScheduleService {
     /*
      *  스케줄 로그 기록 2
      */
-    public int updateScheduleLog(ScheduleLogModel model){
-        return mapper.updateScheduleLog(model);
+    public void updateScheduleLog(ScheduleLogModel model){
+        mapper.updateScheduleLog(model);
     }
 
     /*
      *  스케줄 락 해제
      */
     public void deleteScheduleLock(ScheduleModel model) {
-        return mapper.deleteScheduleLock(model);
+        mapper.deleteScheduleLock(model);
     }
 
     /*
@@ -191,29 +189,29 @@ public class ScheduleService {
     /*
      *  스케줄 실행 결과 목록 조회
      */
-    public List<ScheduleLogModel> selectScheduleLogAllList(Criteria criteria) {
-        return mapper.selectScheduleLogAllList(criteria);
+    public List<ScheduleLogModel> selectScheduleLogAllList() {
+        return mapper.selectScheduleLogAllList();
     }
 
     /*
      *  스케줄 실행 결과 목록 조회
      */
-    public List<ScheduleLogModel> selectScheduleLogList(Criteria criteria) {
-        return mapper.selectScheduleLogList(criteria);
+    public List<ScheduleLogModel> selectScheduleLogList() {
+        return mapper.selectScheduleLogList();
     }
 
     /*
      *  스케줄 실행 결과 목록 조회 건수
      */
-    public int selectScheduleLogListCount(Criteria criteria) {
-        return mapper.selectScheduleLogListCount(criteria);
+    public int selectScheduleLogListCount() {
+        return mapper.selectScheduleLogListCount();
     }
 
     /*
      *  스케줄 실행 결과 조회
      */
-    public ScheduleLogModel selectScheduleOne(Criteria criteria) {
-        return mapper.selectScheduleOne(criteria);
+    public ScheduleLogModel selectScheduleOne() {
+        return mapper.selectScheduleOne();
     }
 
 }
