@@ -14,6 +14,6 @@ public interface Constant {
             put("POINT_RESET", JobPointReset.class);
         }
     };
-    String YES = "YES";
-    String NO = "NO";
+    String YES = "Y";
+    String NO = "N";
 }
