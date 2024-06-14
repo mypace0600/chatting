@@ -1,67 +1,77 @@
 package com.just.chatting.batch.job;
 
+import com.just.chatting.batch.model.ScheduleLogModel;
 import com.just.chatting.batch.model.ScheduleModel;
+import com.just.chatting.batch.service.JobPointResetService;
+import com.just.chatting.batch.service.ScheduleTaskService;
 import com.just.chatting.common.Constant;
+import io.netty.util.internal.StringUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
+import org.json.JSONObject;
 import org.quartz.JobExecutionContext;
-import org.quartz.impl.StdScheduler;
-import org.springframework.stereotype.Service;
+import org.quartz.JobExecutionException;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Slf4j
-@Service
-public class ScheduleService {
-    @Resource
-    private ScheduleMapper mapper;
+@Component
+public class JobPointReset extends QuartzJobBean {
 
     @Resource
-    private StdScheduler scheduler;
-
-    @Resource
-    private CodeMapper codeMapper;
-
-    /*
-     *  스케줄 JobDetail 생성
-     */
-    public JobDetail getJobDetail(ScheduleModel model){
-        JobBuilder jb = JobBuilder.newJob();
-        jb.ofType(Constant.SCHEDULE_JOB.get(model.getScheduleName()));
-        jb.withIdentity(model.getScheduleName(),model.getScheduleCl());
-        return jb.build();
-    }
-
-    /*
-     *  스케줄 즉시 실행 - 나중에 화면 만들면 매개변수 타입을 ScheduleModel 로 변경
-     */
-    public String startJob(String scheduleNm){
-
-    }
+    private JobPointResetService service;
 
 
-    public List<ScheduleModel> selectScheduleLockList() {
-    }
+    @Override
+    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+        String resultCode = "No";
+        String errorMessage = "";
 
-    public boolean isRunningJob(ScheduleModel model) {
-        boolean result = false;
-        List<JobExecutionContext> list = scheduler.getCurrentlyExecutingJobs();
-        for(JobExecutionContext context : list){
-            String scheduleName = context.getJobDetail().getKey().getName();
-            String scheduleCl = context.getJobDetail().getKey().getGroup();
-            if (StringUtils.equals(scheduleCl, model.getScheduleCl())
-                    && StringUtils.equals(scheduleName, model.getScheduleName())
-                    && context.getFireTime().equals(context.getFireTime())) {
-                result = true;
-                break;
+        ScheduleModel model = scheduleService.selectSchedule("POINT_RESET");
+        model.setServerIp(util.getServerIP());
+        int lock = 0;
+
+        ScheduleLogModel logModel = new ScheduleLogModel();
+
+        logModel.setStartDt(LocalDateTime.now());
+        logModel.setIfTy(model.getScheduleName());
+        logModel.setServerIp(model.getServerIp());
+
+        int insLogRslt = scheduleService.insertScheduleLog(logModel);
+        JSONObject msg = new JSONObject();
+        lock = scheduleService.insertScheduleLock(model);
+
+        if(lock==1){
+            log.info("POINT_RESET 배치 시작");
+            try {
+                service.pointReset(msg);
+                if(StringUtils.equals(msg.getJSONObject(Constant.POINT_SYS.POINT_RESET).getStrig(Constant.RESULT),Constant.YES)){
+                    resultCode = Constant.YES;
+                } else {
+                    resultCode = Constant.NO;
+                    errorMessage = msg.getJSONObject(Constant.POINT_SYS.POINT_RESET).getString(Constant.ERROR_MESSAGE);
+                }
+            } catch (Exception e){
+                log.warn("배치 오류");
+                log.warn(e.getMessage());
+                resultCode = Constant.NO;
+                errorMessage = util.getExceptionTrace(e);
             }
-        }
-        return result;
-    }
 
-    public void deleteScheduleLock(ScheduleModel model) {
+            logModel.setResultCode(resultCode);
+            logModel.setMessage(msg);
+            logModel.setErrorMessage(errorMessage);
+            logModel.setEndDt(LocalDateTime.now());
+
+            if(insLogRslt != 1){
+                scheduleService.insertScheduleLog(logModel);
+            } else {
+                scheduleService.updateScheduleLog(logModel);
+            }
+            log.info("배치 종료");
+        }
     }
 }
