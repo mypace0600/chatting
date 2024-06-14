@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -52,7 +53,7 @@ public class ChatController {
     }
 
     @GetMapping("/chat/room/{chatRoomId}")
-    public String chatRoom(@PathVariable("chatRoomId")Integer chatRoomId, @AuthenticationPrincipal PrincipalDetail principal, Model model){
+    public String chatRoom(@PathVariable("chatRoomId") Integer chatRoomId, @AuthenticationPrincipal PrincipalDetail principal, Model model){
         ChatRoom chatRoom = chatService.findChatRoomById(chatRoomId).orElseThrow(EntityNotFoundException::new);
         for(ChatRoomUser cru : chatRoom.getChatRoomUserList()){
             log.info("@@@@@@@@@@@@@@@@@ chatRoom  userId :{}",cru.getUser().getId());
@@ -66,9 +67,9 @@ public class ChatController {
     }
 
     @MessageMapping("/chat/{chatRoomId}") // 클라이언트로부터 메시지를 받는 엔드포인트
-    @SendTo("/topic/messages/{chatRoomId}") // 서버에서 클라이언트로 메시지를 전송할 경로 설정
+    @SendTo("/topic/chat/{chatRoomId}") // 서버에서 클라이언트로 메시지를 전송할 경로 설정
     @ResponseBody
-    public ChatMessage handleMessage(@PathVariable("chatRoomId") int chatRoomId, ChatMessage message) {
+    public ChatMessage handleMessage(@DestinationVariable("chatRoomId") int chatRoomId, ChatMessage message) {
         // 받은 메시지를 처리하고 전달
         return chatService.saveMessage(chatRoomId, message);
     }
