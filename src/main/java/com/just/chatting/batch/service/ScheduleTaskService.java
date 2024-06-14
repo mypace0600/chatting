@@ -1,8 +1,10 @@
 package com.just.chatting.batch.service;
 
 import com.just.chatting.batch.model.ScheduleModel;
+import com.just.chatting.common.CommonUtil;
 import com.just.chatting.common.Constant;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -11,9 +13,11 @@ import java.util.List;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ScheduleTaskService {
-    @Resource
-    private ScheduleService scheduleService;
+
+    private final ScheduleService scheduleService;
+    private final CommonUtil util;
 
     public void checkLock(){
         List<ScheduleModel> list = scheduleService.selectScheduleLockList();

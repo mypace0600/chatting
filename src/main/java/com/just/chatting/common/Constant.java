@@ -14,6 +14,15 @@ public interface Constant {
             put("POINT_RESET", JobPointReset.class);
         }
     };
-    String YES = "Y";
-    String NO = "N";
+
+    public interface POINT_SYS {
+        public static final String POINT_RESET = "point_reset";
+    }
+
+    public static final String YES = "Y";
+    public static final String NO = "N";
+    public static final String UNKNOWN = "unknown";
+    public static final String RESULT = "result";
+    public static final String ERROR_MESSAGE = "error_message";
+
 }
