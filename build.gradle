@@ -22,29 +22,53 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql' // Postgres runtime dependency
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	// lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// jpa
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// mybatis
+	implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.2.2'
+
+	//
+	implementation 'org.springframework.boot:spring-boot-configuration-processor'
+
+	// Postgres runtime dependency
+	implementation 'org.postgresql:postgresql:42.5.1'
+	runtimeOnly 'org.postgresql:postgresql'
+
 	// batch quartz
 	implementation group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
+
 	// JSONObject
 	implementation group: 'org.json', name: 'json', version: '20231013'
+
 	// StringUtils
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
 	// JSTL
 	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api'
 	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl'
+
 	// Tomcat Jasper
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
 	// security tag library
 	implementation 'org.springframework.security:spring-security-taglibs'
+
 	//querydsl 적용
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"

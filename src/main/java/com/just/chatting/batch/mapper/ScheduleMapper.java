@@ -2,9 +2,11 @@ package com.just.chatting.batch.mapper;
 
 import com.just.chatting.batch.model.ScheduleLogModel;
 import com.just.chatting.batch.model.ScheduleModel;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface ScheduleMapper {
 
     ScheduleModel selectSchedule(String scheduleNm);

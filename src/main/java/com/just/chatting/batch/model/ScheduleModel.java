@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ScheduleModel {
-    private String scheduleName;
+    private String scheduleNm;
     private String scheduleCl;
     private String executeCycle;
     private String timeZone;
@@ -20,14 +20,14 @@ public class ScheduleModel {
     private String lockYn;
     private String lockCycle;
     private String useYn;
-    private String rgstId;
+    private String registeredId;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime rgstDt;
-    private String modiId;
+    private LocalDateTime registeredDt;
+    private String updatedId;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime modiDt;
+    private LocalDateTime updatedDt;
     private String serverIp;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

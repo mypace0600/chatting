@@ -30,8 +30,8 @@ public class ScheduleService {
      */
     public JobDetail getJobDetail(ScheduleModel model){
         JobBuilder jb = JobBuilder.newJob();
-        jb.ofType(Constant.SCHEDULE_JOB.get(model.getScheduleName()));
-        jb.withIdentity(model.getScheduleName(),model.getScheduleCl());
+        jb.ofType(Constant.SCHEDULE_JOB.get(model.getScheduleNm()));
+        jb.withIdentity(model.getScheduleNm(),model.getScheduleCl());
         return jb.build();
     }
 
@@ -40,8 +40,8 @@ public class ScheduleService {
      */
     public Trigger getTrigger(ScheduleModel model){
         TriggerBuilder<Trigger> tb = TriggerBuilder.newTrigger();
-        tb.forJob(model.getScheduleName(),model.getScheduleCl());
-        tb.withIdentity(model.getScheduleName(),model.getScheduleCl());
+        tb.forJob(model.getScheduleNm(),model.getScheduleCl());
+        tb.withIdentity(model.getScheduleNm(),model.getScheduleCl());
         tb.withSchedule(CronScheduleBuilder.cronSchedule(model.getExecuteCycle()).inTimeZone(TimeZone.getTimeZone("Asia/Seoul")));
         return tb.build();
     }
@@ -90,7 +90,7 @@ public class ScheduleService {
             String scheduleName = context.getJobDetail().getKey().getName();
             String scheduleCl = context.getJobDetail().getKey().getGroup();
             if (StringUtils.equals(scheduleCl, model.getScheduleCl())
-                    && StringUtils.equals(scheduleName, model.getScheduleName())
+                    && StringUtils.equals(scheduleName, model.getScheduleNm())
                     && context.getFireTime().equals(context.getFireTime())) {
                 result = true;
                 break;
@@ -104,9 +104,9 @@ public class ScheduleService {
      */
     public void stopSchedule(ScheduleModel model){
         try {
-            scheduler.deleteJob(JobKey.jobKey(model.getScheduleName(),model.getScheduleCl()));
+            scheduler.deleteJob(JobKey.jobKey(model.getScheduleNm(),model.getScheduleCl()));
         } catch (SchedulerException e){
-            log.warn("스케줄 {} 중지 오류",model.getScheduleName());
+            log.warn("스케줄 {} 중지 오류",model.getScheduleNm());
             log.warn(e.getMessage());
         }
     }
@@ -118,7 +118,7 @@ public class ScheduleService {
         try {
             scheduler.scheduleJob(getJobDetail(model),getTrigger(model));
         } catch (SchedulerException e){
-            log.warn("스케줄 {} 시작 오류",model.getScheduleName());
+            log.warn("스케줄 {} 시작 오류",model.getScheduleNm());
             log.warn(e.getMessage());
         }
     }
@@ -146,7 +146,7 @@ public class ScheduleService {
             }
         } catch (DuplicateKeyException e){
             result = 0;
-            log.info("스케줄 {} : 작업 중인 스케줄 있음",model.getScheduleName());
+            log.info("스케줄 {} : 작업 중인 스케줄 있음",model.getScheduleNm());
         }
         return result;
     }

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class ScheduleLogModel {
     private String resultCode;
     private String errorMessage;
-    private JSONObject message;
+    private String message;
     private LocalDateTime startDt;
     private LocalDateTime endDt;
     private String ifTy;

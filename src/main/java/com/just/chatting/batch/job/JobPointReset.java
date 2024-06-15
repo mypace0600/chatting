@@ -25,7 +25,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class JobPointReset extends QuartzJobBean {
 
-
     private final JobPointResetService service;
     private final ScheduleService scheduleService;
     private final CommonUtil util;
@@ -42,7 +41,7 @@ public class JobPointReset extends QuartzJobBean {
         ScheduleLogModel logModel = new ScheduleLogModel();
 
         logModel.setStartDt(LocalDateTime.now());
-        logModel.setIfTy(model.getScheduleName());
+        logModel.setIfTy(model.getScheduleNm());
         logModel.setServerIp(model.getServerIp());
 
         int insLogRslt = scheduleService.insertScheduleLog(logModel);
@@ -67,7 +66,7 @@ public class JobPointReset extends QuartzJobBean {
             }
 
             logModel.setResultCode(resultCode);
-            logModel.setMessage(msg);
+            logModel.setMessage(msg.toString());
             logModel.setErrorMessage(errorMessage);
             logModel.setEndDt(LocalDateTime.now());
 

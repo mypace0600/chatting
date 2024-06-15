@@ -1,13 +1,14 @@
 spring:
   config:
     import: credentials.yml
+    location: classpath:credentials.yml
   mvc:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
 
   mail:
-    host: smtp.naver.com #smtp 서버 주소
+    host: smtp.naver.com # SMTP 서버 주소
     port: 465 # 메일 인증서버 포트
     username: ${email.admin.id}
     password: ${email.admin.password}
@@ -17,10 +18,11 @@ spring:
           starttls:
             enable: true
           auth: true
-          connectiontimeout: 600*1000
+          connectiontimeout: 600000 # 600*1000
           ssl:
             trust: smtp.naver.com
             enable: true
+
   redis:
     lettuce:
       pool:
@@ -48,7 +50,3 @@ spring:
 
 server:
   port: 8081
-
-logging:
-  level:
-    root: debug
