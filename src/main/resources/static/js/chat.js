@@ -20,17 +20,15 @@ let chatIndex = {
 
     connectToWebSocket : function() {
         if (!this.stompClient || !this.stompClient.connected) {
-            let socket = new SockJS('/chat-websocket'); // 올바른 엔드포인트로 변경
+            let socket = new SockJS('/ws-stomp'); // 올바른 엔드포인트로 변경
             this.stompClient = Stomp.over(socket);
-
             this.stompClient.connect({}, function(frame) {
                 console.log('Connected to WebSocket server');
-
                 // 채팅방 입장 메시지 전송
                 chatIndex.stompClient.send("/app/chat", {}, JSON.stringify({ username: 'USERNAME', message: '입장했습니다.' }));
 
                 // 메시지 수신 구독
-                chatIndex.stompClient.subscribe('/topic/chat', function(message) {
+                chatIndex.stompClient.subscribe('/room/'+roomId, function(message) {
                     let data = JSON.parse(message.body);
                     let username = data.username;
                     let messageContent = data.message;

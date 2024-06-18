@@ -66,8 +66,8 @@ public class ChatController {
         return "chat/room";
     }
 
-    @MessageMapping("/chat/{chatRoomId}") // 클라이언트로부터 메시지를 받는 엔드포인트
-    @SendTo("/topic/chat/{chatRoomId}") // 서버에서 클라이언트로 메시지를 전송할 경로 설정
+    @MessageMapping("/{chatRoomId}") // 클라이언트로부터 메시지를 받는 엔드포인트
+    @SendTo("/room/{chatRoomId}") // 서버에서 클라이언트로 메시지를 전송할 경로 설정
     @ResponseBody
     public ChatMessage handleMessage(@DestinationVariable("chatRoomId") int chatRoomId, ChatMessage message) {
         // 받은 메시지를 처리하고 전달
