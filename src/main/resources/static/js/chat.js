@@ -20,7 +20,7 @@ let chatIndex = {
 
     connectToWebSocket : function() {
         if (!this.stompClient || !this.stompClient.connected) {
-            let socket = new SockJS('/ws-stomp'); // 올바른 엔드포인트로 변경
+            let socket = new SockJS('/ws'); // 올바른 엔드포인트로 변경
             this.stompClient = Stomp.over(socket);
             this.stompClient.connect({}, function(frame) {
                 console.log('Connected to WebSocket server');

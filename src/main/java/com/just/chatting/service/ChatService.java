@@ -53,14 +53,7 @@ public class ChatService {
         return chatRoomRepository.findById(chatRoomId);
     }
 
-    public ChatMessage saveMessage(int chatRoomId, ChatMessage message) {
-        Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findById(chatRoomId);
-        if (chatRoomOptional.isPresent()) {
-            ChatRoom chatRoom = chatRoomOptional.get();
-            message.setChatRoom(chatRoom);
-            return chatMessageRepository.save(message);
-        } else {
-            throw new IllegalArgumentException("Chat room not found with ID: " + chatRoomId);
-        }
+    public ChatMessage saveMessage(ChatMessage message) {
+        return chatMessageRepository.save(message);
     }
 }
