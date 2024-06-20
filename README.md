@@ -15,4 +15,5 @@
 - 실시간 채팅 세모
 - 채팅방 삭제 아직
 
-endpoint?
+참고 : 
+https://woo0doo.tistory.com/38

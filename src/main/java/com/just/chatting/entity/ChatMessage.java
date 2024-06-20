@@ -3,7 +3,9 @@ package com.just.chatting.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,5 +29,6 @@ public class ChatMessage {
 
     private String messageType;
 
-    private LocalDateTime sendDt;
+    @CreatedDate
+    private Timestamp sendDt;
 }
