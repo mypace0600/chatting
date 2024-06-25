@@ -18,4 +18,4 @@
 참고 : 
 - https://woo0doo.tistory.com/38
 - https://github.com/hansun-hub/webSocket
-수정필요
+- https://1son.tistory.com/416
