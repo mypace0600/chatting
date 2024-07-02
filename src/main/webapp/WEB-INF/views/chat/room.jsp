@@ -6,6 +6,7 @@
 <%@include file="../common/sidebar.jsp"%>
 <div class="main-content">
     <div class="chat-container">
+        <input type="hidden" id="chatRoomId" value="${chatRoom.id}"/>
         <div class="message-list-box" id="messageListBox">
             <ul class="message-list" id="messageList">
             </ul>

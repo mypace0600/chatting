@@ -1,17 +1,16 @@
 let chatIndex = {
-    stompClient: null, // stompClient를 객체의 프로퍼티로 선언
+    stompClient: null,
 
-    init : function (){
+    init : function () {
         $(document).ready(() => {
             this.connectToWebSocket();
         });
 
-        // 메시지 전송 버튼 클릭 이벤트
         $("#sendButton").on("click", () => {
             let message = $("#messageInput").val();
-            if (message && this.stompClient && this.stompClient.connected) { // stompClient 연결 상태 확인
+            if (message && this.stompClient && this.stompClient.connected) {
                 this.stompClient.send("/app/chat", {}, JSON.stringify({ message: message }));
-                $("#messageInput").val(""); // 메시지 입력창 비우기
+                $("#messageInput").val("");
             } else {
                 console.log("WebSocket is not connected.");
             }
@@ -20,26 +19,26 @@ let chatIndex = {
 
     connectToWebSocket : function() {
         if (!this.stompClient || !this.stompClient.connected) {
-            let socket = new SockJS('/ws'); // 올바른 엔드포인트로 변경
+            let socket = new SockJS('/ws');
             this.stompClient = Stomp.over(socket);
             this.stompClient.connect({}, function(frame) {
                 console.log('Connected to WebSocket server');
-                // 채팅방 입장 메시지 전송
                 chatIndex.stompClient.send("/app/chat", {}, JSON.stringify({ username: 'USERNAME', message: '입장했습니다.' }));
 
-                // 메시지 수신 구독
-                chatIndex.stompClient.subscribe('/room/'+roomId, function(message) {
+                chatIndex.stompClient.subscribe('/topic/' + roomId, function(message) {
                     let data = JSON.parse(message.body);
                     let username = data.username;
                     let messageContent = data.message;
 
-                    // 메시지 출력 (나의 메시지 vs 다른 사용자 메시지)
                     if (username === 'USERNAME') {
                         chatIndex.appendMyMessage(messageContent);
                     } else {
                         chatIndex.appendOtherMessage(username, messageContent);
                     }
                 });
+            }, function(error) {
+                console.log('WebSocket connection error: ' + error);
+                setTimeout(() => chatIndex.connectToWebSocket(), 5000); // 재연결 시도
             });
         }
     },
@@ -64,4 +63,6 @@ let chatIndex = {
     },
 }
 
+let roomId = document.getElementById("chatRoomId").value; // 실제 채팅방 ID로 변경
+console.log(roomId); // roomId 값이 올바르게 출력되는지 확인
 chatIndex.init();
