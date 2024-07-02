@@ -55,6 +55,7 @@ public class ChatRoomController {
     public String chatRoom(@PathVariable("chatRoomId") Integer chatRoomId, @AuthenticationPrincipal PrincipalDetail principal, Model model){
         ChatRoom chatRoom = chatService.findChatRoomById(chatRoomId).orElseThrow(EntityNotFoundException::new);
         model.addAttribute("chatRoom",chatRoom);
+        model.addAttribute("senderId",principal.getUser().getId());
         return "chat/room";
     }
 }

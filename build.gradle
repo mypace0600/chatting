@@ -50,9 +50,6 @@ dependencies {
 	implementation 'org.postgresql:postgresql:42.5.1'
 	runtimeOnly 'org.postgresql:postgresql'
 
-	// batch quartz
-	implementation group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
-
 	// JSONObject
 	implementation group: 'org.json', name: 'json', version: '20231013'
 

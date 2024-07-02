@@ -7,6 +7,8 @@ let chatIndex = {
         });
 
         $("#sendButton").on("click", () => {
+            let senderId = document.getElementById("sender").value;
+            let chatRoomId =  roomId;
             let message = $("#messageInput").val();
             if (message && this.stompClient && this.stompClient.connected) {
                 this.stompClient.send("/app/chat", {}, JSON.stringify({ message: message }));

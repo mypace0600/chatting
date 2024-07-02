@@ -53,7 +53,7 @@ public class ChatService {
         return chatRoomRepository.findById(chatRoomId);
     }
 
-    public ChatMessage saveMessage(ChatMessage message) {
-        return chatMessageRepository.save(message);
+    public void saveMessage(ChatMessage message) {
+        chatMessageRepository.save(message);
     }
 }

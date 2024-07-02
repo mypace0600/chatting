@@ -2,6 +2,7 @@ package com.just.chatting.controller;
 
 import com.just.chatting.common.CamelCaseMap;
 import com.just.chatting.config.security.PrincipalDetail;
+import com.just.chatting.dto.ChatMessageDto;
 import com.just.chatting.dto.ChatMessageRequestDto;
 import com.just.chatting.dto.ChatRoomDto;
 import com.just.chatting.entity.ChatMessage;
@@ -38,8 +39,18 @@ public class ChatController {
 
 
 
-    @MessageMapping("chat/message")
-    public void message(ChatMessage message){
-        messagingTemplate.convertAndSend("/sub/chat/room"+message.getChatRoom().getId(),message);
+    @MessageMapping("/chat")
+    @SendTo("/topic/messages")
+    public ChatMessage sendMessage(ChatMessageDto chatMessageDto) {
+        // 메시지를 데이터베이스에 저장
+        ChatMessage chatMessage = new ChatMessage();
+        ChatRoom chatRoom = chatService.findChatRoomById(chatMessageDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
+        User sender = userRepository.findById(chatMessageDto.getSenderId()).orElseThrow(EntityNotFoundException::new);
+        chatMessage.setChatRoom(chatRoom);
+        chatMessage.setSender(sender);
+        chatMessage.setContent(chatMessageDto.getMessage());
+
+        chatService.saveMessage(chatMessage);
+        return chatMessage;
     }
 }
