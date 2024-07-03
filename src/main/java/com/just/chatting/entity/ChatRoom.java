@@ -1,5 +1,6 @@
 package com.just.chatting.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class ChatRoom {
     private String name;
 
     @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
 
     @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY)

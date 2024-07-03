@@ -1,5 +1,6 @@
 package com.just.chatting.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class ChatRoomUser {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="chat_room_id")
+    @JsonIgnore
     private ChatRoom chatRoom;
 
     @ManyToOne(fetch = FetchType.LAZY)

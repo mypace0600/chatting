@@ -7,7 +7,7 @@
 <div class="main-content">
     <div class="chat-container">
         <input type="hidden" id="chatRoomId" value="${chatRoom.id}"/>
-        <input type="hidden" id="sender" value="${senderId}"/>
+        <input type="hidden" id="senderId" value="${senderId}"/>
         <div class="message-list-box" id="messageListBox">
             <ul class="message-list" id="messageList">
             </ul>

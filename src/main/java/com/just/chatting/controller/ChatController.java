@@ -12,20 +12,13 @@ import com.just.chatting.repository.ChatRoomRepository;
 import com.just.chatting.repository.UserRepository;
 import com.just.chatting.service.ChatService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -39,9 +32,11 @@ public class ChatController {
 
 
 
-    @MessageMapping("/chat")
-    @SendTo("/topic/messages")
-    public ChatMessage sendMessage(ChatMessageDto chatMessageDto) {
+    @MessageMapping("/chat/message")
+    @Transactional
+    public void sendMessage(ChatMessageDto chatMessageDto) {
+        log.info("Received message: senderId={}, chatRoomId={}, message={}", chatMessageDto.getSenderId(), chatMessageDto.getChatRoomId(), chatMessageDto.getMessage());
+
         // 메시지를 데이터베이스에 저장
         ChatMessage chatMessage = new ChatMessage();
         ChatRoom chatRoom = chatService.findChatRoomById(chatMessageDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
@@ -51,6 +46,8 @@ public class ChatController {
         chatMessage.setContent(chatMessageDto.getMessage());
 
         chatService.saveMessage(chatMessage);
-        return chatMessage;
+
+        // 메시지를 특정 채팅방에 브로드캐스트
+        messagingTemplate.convertAndSend("/topic/chat/room/" + chatMessageDto.getChatRoomId(), chatMessage);
     }
 }
