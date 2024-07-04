@@ -1,5 +1,6 @@
 package com.just.chatting.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class ChatMessage {
 
     @ManyToOne
     @JoinColumn(name = "chat_room_id",  referencedColumnName = "id", nullable = false)
+    @JsonIgnore
     private ChatRoom chatRoom;
 
     @ManyToOne
