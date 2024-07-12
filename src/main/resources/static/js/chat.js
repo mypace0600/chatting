@@ -36,11 +36,12 @@ let chatIndex = {
                     console.log(data);
                     let username = data.sender.id;
                     let messageContent = data.content;
+                    let sendDt = new Date(data.sendDt).toLocaleString();
 
                     if (username == document.getElementById("senderId").value) {
-                        chatIndex.appendMyMessage(messageContent);
+                        chatIndex.appendMyMessage(messageContent,sendDt);
                     } else {
-                        chatIndex.appendOtherMessage(username, messageContent);
+                        chatIndex.appendOtherMessage(username, messageContent,sendDt);
                     }
                 });
             }, function(error) {
@@ -50,21 +51,23 @@ let chatIndex = {
         }
     },
 
-    appendMyMessage: function(message) {
+   appendMyMessage: function(message, sendDt) {
         let messageList = $("#messageList");
-        let messageItem = $('<div class="message-container my-message-container" style="display: flex; justify-content: flex-end;">')
-            .append($('<span class="message my-message">').text(message));
+        let messageItem = $('<div class="message-container my-message-container" style="display: flex; flex-direction: column; justify-content: center; align-items: end;">')
+            .append($('<span class="message my-message">').text(message))
+            .append($('<span class="message-date">').text(sendDt));
         messageList.append(messageItem);
         this.scrollToBottom();
-    },
+   },
 
-    appendOtherMessage: function(username, message) {
+   appendOtherMessage: function(username, message, sendDt) {
         let messageList = $("#messageList");
-        let messageItem = $('<div class="message-container other-message-container" style="display: flex; justify-content: flex-start;">')
-            .append($('<span class="message other-message">').html('<strong>' + username + '</strong>: ' + message));
+        let messageItem = $('<div class="message-container other-message-container" style="display: flex; flex-direction: column; justify-content: center; align-items: start;">')
+            .append($('<span class="message other-message">').html('<strong>' + username + '</strong>: ' + message))
+            .append($('<span class="message-date">').text(sendDt));
         messageList.append(messageItem);
         this.scrollToBottom();
-    },
+   },
 
     scrollToBottom: function() {
         let messageListBox = $("#messageListBox");
