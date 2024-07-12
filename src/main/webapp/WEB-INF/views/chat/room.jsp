@@ -9,8 +9,8 @@
         <input type="hidden" id="chatRoomId" value="${chatRoom.id}"/>
         <input type="hidden" id="senderId" value="${senderId}"/>
         <div class="message-list-box" id="messageListBox">
-            <ul class="message-list" id="messageList">
-            </ul>
+            <div class="message-list" id="messageList" style="display:flex; flex-direction:column;">
+            </div>
         </div>
         <div class="message-input-box">
             <div class="message-input-wrapper">

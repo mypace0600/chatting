@@ -33,10 +33,11 @@ let chatIndex = {
 
                 chatIndex.stompClient.subscribe('/topic/chat/room/' + roomId, function(message) {
                     let data = JSON.parse(message.body);
-                    let username = data.sender.username;
+                    console.log(data);
+                    let username = data.sender.id;
                     let messageContent = data.content;
 
-                    if (username === document.getElementById("senderId").value) {
+                    if (username == document.getElementById("senderId").value) {
                         chatIndex.appendMyMessage(messageContent);
                     } else {
                         chatIndex.appendOtherMessage(username, messageContent);
@@ -51,14 +52,16 @@ let chatIndex = {
 
     appendMyMessage: function(message) {
         let messageList = $("#messageList");
-        let messageItem = $('<li class="message my-message">').text(message);
+        let messageItem = $('<div class="message-container my-message-container" style="display: flex; justify-content: flex-end;">')
+            .append($('<span class="message my-message">').text(message));
         messageList.append(messageItem);
         this.scrollToBottom();
     },
 
     appendOtherMessage: function(username, message) {
         let messageList = $("#messageList");
-        let messageItem = $('<li class="message other-message">').html('<strong>' + username + '</strong>: ' + message);
+        let messageItem = $('<div class="message-container other-message-container" style="display: flex; justify-content: flex-start;">')
+            .append($('<span class="message other-message">').html('<strong>' + username + '</strong>: ' + message));
         messageList.append(messageItem);
         this.scrollToBottom();
     },
