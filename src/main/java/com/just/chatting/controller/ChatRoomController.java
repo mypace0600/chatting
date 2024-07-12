@@ -3,12 +3,17 @@ package com.just.chatting.controller;
 import com.just.chatting.common.CamelCaseMap;
 import com.just.chatting.config.security.PrincipalDetail;
 import com.just.chatting.dto.ChatRoomDto;
+import com.just.chatting.entity.ChatMessage;
 import com.just.chatting.entity.ChatRoom;
 import com.just.chatting.entity.User;
 import com.just.chatting.repository.ChatRoomRepository;
 import com.just.chatting.service.ChatService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Controller
 @RequestMapping("/chat")
 @RequiredArgsConstructor
@@ -54,8 +60,17 @@ public class ChatRoomController {
     @GetMapping("/room/{chatRoomId}")
     public String chatRoom(@PathVariable("chatRoomId") Integer chatRoomId, @AuthenticationPrincipal PrincipalDetail principal, Model model){
         ChatRoom chatRoom = chatService.findChatRoomById(chatRoomId).orElseThrow(EntityNotFoundException::new);
+        Page<ChatMessage> latestChatMessageList = chatService.findChatMessagesByChatRoomId(chatRoomId, PageRequest.of(0,10,Sort.by(Sort.Direction.DESC, "sendDt")));
+        model.addAttribute("latestChatMessageList", latestChatMessageList.getContent());
         model.addAttribute("chatRoom",chatRoom);
         model.addAttribute("senderId",principal.getUser().getId());
         return "chat/room";
+    }
+
+    @GetMapping("/room/{chatRoomId}/messages")
+    @ResponseBody
+    public List<ChatMessage> getChatMessages(@PathVariable("chatRoomId") Integer chatRoomId, @RequestParam("page") int page) {
+        Page<ChatMessage> chatMessages = chatService.findChatMessagesByChatRoomId(chatRoomId, PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "timestamp")));
+        return chatMessages.getContent();
     }
 }

@@ -29,11 +29,6 @@ public class ChatRoom {
     @JsonIgnore
     private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<ChatMessage> chatMessageList = new ArrayList<>();
-
-    // 생성자 추가
     public ChatRoom(String name) {
         this.name = name;
     }
