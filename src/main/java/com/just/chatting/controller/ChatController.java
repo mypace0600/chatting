@@ -34,7 +34,7 @@ public class ChatController {
     @MessageMapping("/chat/message")
     @Transactional
     public void sendMessage(ChatMessageDto chatMessageDto) {
-        log.info("Received message: senderId={}, chatRoomId={}, message={}", chatMessageDto.getSenderId(), chatMessageDto.getChatRoomId(), chatMessageDto.getMessage());
+        log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Received message: senderId={}, chatRoomId={}, message={}", chatMessageDto.getSenderId(), chatMessageDto.getChatRoomId(), chatMessageDto.getMessage());
 
         // 메시지를 데이터베이스에 저장
         ChatMessage chatMessage = new ChatMessage();

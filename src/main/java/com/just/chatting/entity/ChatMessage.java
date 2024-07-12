@@ -33,3 +33,4 @@ public class ChatMessage {
     @CreatedDate
     private Timestamp sendDt;
 }
+
