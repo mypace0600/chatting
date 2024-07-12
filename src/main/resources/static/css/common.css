@@ -114,6 +114,12 @@ body {
     background-color: #138496;
 }
 
+.message-list-box {
+    height: 400px; /* 필요에 따라 높이를 조정하세요 */
+    overflow-y: auto;
+    border: 1px solid #ccc; /* 시각적으로 확인하기 위해 */
+}
+
 /* 모바일 반응형 디자인 */
 @media (max-width: 768px) {
     .auth-buttons {
