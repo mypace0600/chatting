@@ -6,6 +6,7 @@ let chatIndex = {
     init: function() {
         $(document).ready(() => {
             this.connectToWebSocket();
+            this.currentPage = 0;
             this.loadMoreMessages(); // 초기 메시지 로드
         });
 
@@ -86,7 +87,7 @@ let chatIndex = {
 
     loadMoreMessages: function() {
         this.loading = true;
-        this.currentPage++;
+        console.log(this.currentPage);
 
         $.ajax({
             url: `/chat/room/${roomId}/messages?page=${this.currentPage}`,
@@ -112,7 +113,7 @@ let chatIndex = {
                             .append($('<span class="message-date">').text(sendDt));
                     }
 
-                    messageList.appendChild(messageItem);
+                    messageList.append(messageItem);
                 });
 
                 let scrollHeightAfter = messageList[0].scrollHeight;
@@ -124,6 +125,8 @@ let chatIndex = {
                 this.loading = false;
             }
         });
+
+        this.currentPage++;
     }
 }
 
