@@ -1,4 +1,4 @@
-package com.just.chatting.repository.custom;
+package com.just.chatting.repository.jpa.custom;
 
 import com.just.chatting.entity.Friend;
 import com.just.chatting.entity.User;

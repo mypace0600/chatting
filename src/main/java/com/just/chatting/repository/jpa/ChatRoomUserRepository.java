@@ -1,4 +1,4 @@
-package com.just.chatting.repository;
+package com.just.chatting.repository.jpa;
 
 import com.just.chatting.entity.ChatRoomUser;
 import org.springframework.data.jpa.repository.JpaRepository;

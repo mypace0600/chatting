@@ -2,7 +2,7 @@ package com.just.chatting.service;
 
 
 import com.just.chatting.entity.Mail;
-import com.just.chatting.repository.MailRepository;
+import com.just.chatting.repository.jpa.MailRepository;
 import jakarta.mail.PasswordAuthentication;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

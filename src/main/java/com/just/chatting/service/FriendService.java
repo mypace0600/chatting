@@ -1,11 +1,10 @@
 package com.just.chatting.service;
 
 import com.just.chatting.config.security.PrincipalDetail;
-import com.just.chatting.dto.FriendDto;
 import com.just.chatting.entity.Friend;
 import com.just.chatting.entity.User;
-import com.just.chatting.repository.FriendRepository;
-import com.just.chatting.repository.UserRepository;
+import com.just.chatting.repository.jpa.FriendRepository;
+import com.just.chatting.repository.jpa.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

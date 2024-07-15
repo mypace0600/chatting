@@ -4,16 +4,15 @@ import com.just.chatting.entity.ChatMessage;
 import com.just.chatting.entity.ChatRoom;
 import com.just.chatting.entity.ChatRoomUser;
 import com.just.chatting.entity.User;
-import com.just.chatting.repository.ChatMessageRepository;
-import com.just.chatting.repository.ChatRoomRepository;
-import com.just.chatting.repository.ChatRoomUserRepository;
-import com.just.chatting.repository.UserRepository;
+import com.just.chatting.repository.jpa.ChatRoomRepository;
+import com.just.chatting.repository.jpa.ChatRoomUserRepository;
+import com.just.chatting.repository.jpa.JpaChatMessageRepository;
+import com.just.chatting.repository.jpa.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
     private final ChatRoomUserRepository chatRoomUserRepository;
-    private final ChatMessageRepository chatMessageRepository;
+    private final JpaChatMessageRepository jpaChatMessageRepository;
 
     public Optional<ChatRoom> findChatRoomByUsers(Integer toUserId, Integer fromUserId) {
         return chatRoomRepository.findByUsers(toUserId,fromUserId);
@@ -57,10 +56,10 @@ public class ChatService {
     }
 
     public void saveMessage(ChatMessage message) {
-        chatMessageRepository.save(message);
+        jpaChatMessageRepository.save(message);
     }
 
     public Page<ChatMessage> findChatMessagesByChatRoomId(Integer chatRoomId, Pageable pageable) {
-        return chatMessageRepository.findByChatRoomId(chatRoomId,pageable);
+        return jpaChatMessageRepository.findByChatRoomId(chatRoomId,pageable);
     }
 }
