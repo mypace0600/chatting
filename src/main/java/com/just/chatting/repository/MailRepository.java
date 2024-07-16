@@ -1,4 +1,4 @@
-package com.just.chatting.repository.jpa;
+package com.just.chatting.repository;
 
 import com.just.chatting.entity.Mail;
 import org.springframework.data.jpa.repository.JpaRepository;

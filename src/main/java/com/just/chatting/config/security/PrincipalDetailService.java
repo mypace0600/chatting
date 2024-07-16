@@ -1,7 +1,7 @@
 package com.just.chatting.config.security;
 
 import com.just.chatting.entity.User;
-import com.just.chatting.repository.jpa.UserRepository;
+import com.just.chatting.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

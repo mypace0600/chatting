@@ -6,7 +6,7 @@ import com.just.chatting.dto.ChatRoomDto;
 import com.just.chatting.entity.ChatMessage;
 import com.just.chatting.entity.ChatRoom;
 import com.just.chatting.entity.User;
-import com.just.chatting.repository.jpa.ChatRoomRepository;
+import com.just.chatting.repository.ChatRoomRepository;
 import com.just.chatting.service.ChatService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
