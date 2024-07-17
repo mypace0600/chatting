@@ -26,3 +26,4 @@
 <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 <!-- chat.js 로드 -->
 <script src="/js/chat.js"></script>
+<script src="/js/common.js"></script>

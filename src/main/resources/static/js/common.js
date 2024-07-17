@@ -11,6 +11,7 @@ let common = {
     },
 
     goBack: function() {
+        console.log("back");
         window.history.back();
     }
 }
