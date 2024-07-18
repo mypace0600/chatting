@@ -18,4 +18,5 @@
     </div>
 </div>
 <%@include file="modal/searchResult.jsp"%>
+<%@include file="modal/friendListPopup.jsp"%>
 <%@include file="common/footer.jsp"%>

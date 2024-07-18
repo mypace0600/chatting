@@ -3,8 +3,9 @@
 <footer>
     <sec:authorize access="isAuthenticated()">
         <div class="footer-buttons">
-            <button>친구목록</button>
-            <button>채팅방목록</button>
+            <button>친구목록보기</button>
+            <button>채팅방목록보기</button>
+            <button type="button" id="makeChatRoomBtn">채팅방만들기</button>
         </div>
     </sec:authorize>
     <sec:authorize access="hasRole('admin')">
