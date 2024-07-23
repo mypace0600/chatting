@@ -25,8 +25,11 @@
 - 채팅 읽었는지 체크
 - 친구 삭제
 - 배포
+### 수정해야할 부분
+- 친구 신청 두번 누르지 않도록
+- 닉네임 검색시 없으면 없다고 알려주는거
 
-참고 : 
+### 참고 : 
 - https://woo0doo.tistory.com/38
 - https://github.com/hansun-hub/webSocket
 - https://1son.tistory.com/416
