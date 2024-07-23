@@ -4,11 +4,19 @@
     <div id="popupOverlay" class="overlay">
         <div class="popup">
             <div class="popup-header">
-                <span>팝업 제목</span>
+                <span>초대할 친구 목록</span>
                 <button class="close-btn" onclick="closePopup()">X</button>
             </div>
             <div class="popup-content">
-                <p>팝업 내용이 여기에 표시됩니다.</p>
+                <ul>
+                    <c:forEach var="user" items="${friendList}">
+                        <li>
+                            <input type="hidden" class="toUserId", value="${user.id}">
+                            <span>${user.nickName}</span>
+                            <button type="button" class="chatBtn">chat</button>
+                        </li>
+                    </c:forEach>
+                </ul>
             </div>
         </div>
     </div>
