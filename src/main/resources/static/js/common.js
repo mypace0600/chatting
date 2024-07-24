@@ -4,6 +4,7 @@ let common = {
         $("#closeSideBarBtn").on("click", this.sideBarToggle);
         $("#goBackBtn").on("click", this.goBack);
         $("#makeChatRoomBtn").on("click", this.friendListPopupShow);
+        $("#createChatRoom").on("click",this.createChatRoom);
 
         // 팝업 오버레이 클릭 시 이벤트 막기
         $("#popupOverlay").on('click', function(event) {
@@ -31,6 +32,15 @@ let common = {
 
     closePopup: function() {
         document.getElementById('friendListPopup').classList.add("noneActive");
+    },
+
+    createChatRoom : function (){
+     let targetUserIdList = document.querySelectorAll(".targetUserId");
+     targetUserIdList.forEach((checkbox) => {
+          if (checkbox.checked) {
+            console.log(checkbox.id);
+          }
+      });
     }
 }
 

@@ -11,12 +11,12 @@
                 <ul>
                     <c:forEach var="user" items="${friendList}">
                         <li>
-                            <input type="hidden" class="toUserId", value="${user.id}">
+                            <input type="checkbox" class="targetUserId" id="${user.id}"/>
                             <span>${user.nickName}</span>
-                            <button type="button" class="chatBtn">chat</button>
                         </li>
                     </c:forEach>
                 </ul>
+                <button type="button" id="createChatRoom">채팅방생성</button>
             </div>
         </div>
     </div>
