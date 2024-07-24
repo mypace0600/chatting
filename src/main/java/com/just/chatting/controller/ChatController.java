@@ -22,7 +22,6 @@ public class ChatController {
 
     private final ChatService chatService;
     private final UserRepository userRepository;
-    private final ChatRoomRepository chatRoomRepository;
     private final SimpMessageSendingOperations messagingTemplate;
 
 

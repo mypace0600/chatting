@@ -30,16 +30,13 @@ import java.util.Optional;
 public class ChatRoomController {
 
     private final ChatService chatService;
-    private final ChatRoomRepository chatRoomRepository;
-
-
 
     @PostMapping("/check")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> checkChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
         CamelCaseMap resultBox = new CamelCaseMap();
         User loginUser = principal.getUser();
-        Optional<ChatRoom> chatRoom = chatService.findChatRoomByUsers(chatRoomDto.getToUserId(),loginUser.getId());
+        Optional<ChatRoom> chatRoom = chatService.findChatRoomByUsers(chatRoomDto.getToUserIdList(),loginUser.getId());
         if(chatRoom.isPresent()){
             resultBox.put("success",true);
             resultBox.put("chatRoomId",chatRoom.get().getId());
@@ -50,7 +47,7 @@ public class ChatRoomController {
     @PostMapping("/room")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> createChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
-        ChatRoom chatRoom = chatService.createChatRoom(chatRoomDto.getToUserId(),principal.getUser().getId());
+        ChatRoom chatRoom = chatService.createChatRoom(chatRoomDto.getToUserIdList(),principal.getUser().getId());
         CamelCaseMap resultBox = new CamelCaseMap();
         resultBox.put("chatRoomId",chatRoom.getId());
         resultBox.put("success",true);

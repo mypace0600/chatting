@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -27,13 +28,12 @@ public class ChatService {
     private final ChatRoomUserRepository chatRoomUserRepository;
     private final ChatMessageRepository chatMessageRepository;
 
-    public Optional<ChatRoom> findChatRoomByUsers(Integer toUserId, Integer fromUserId) {
-        return chatRoomRepository.findByUsers(toUserId,fromUserId);
+    public Optional<ChatRoom> findChatRoomByUsers(List<Integer> toUserId, Integer fromUserId) {
+        return chatRoomRepository.findByUsers(toUserId,toUserId.size(),fromUserId);
     }
 
-    public ChatRoom createChatRoom(Integer toUserId,Integer fromUserId) {
+    public ChatRoom createChatRoom(List<Integer> toUserIdList,Integer fromUserId) {
         User fromUser = userRepository.findById(fromUserId).orElseThrow(EntityNotFoundException::new);
-        User toUser = userRepository.findById(toUserId).orElseThrow(EntityNotFoundException::new);
 
         ChatRoom chatRoom = new ChatRoom();
         chatRoom = chatRoomRepository.save(chatRoom);
@@ -43,11 +43,13 @@ public class ChatService {
         chatRoomUserFrom.setUser(fromUser);
         chatRoomUserRepository.save(chatRoomUserFrom);
 
-        ChatRoomUser chatRoomUserTo = new ChatRoomUser();
-        chatRoomUserTo.setChatRoom(chatRoom);
-        chatRoomUserTo.setUser(toUser);
-        chatRoomUserRepository.save(chatRoomUserTo);
-
+        for(Integer toUserId : toUserIdList) {
+            User toUser = userRepository.findById(toUserId).orElseThrow(EntityNotFoundException::new);
+            ChatRoomUser chatRoomUserTo = new ChatRoomUser();
+            chatRoomUserTo.setChatRoom(chatRoom);
+            chatRoomUserTo.setUser(toUser);
+            chatRoomUserRepository.save(chatRoomUserTo);
+        }
         return chatRoom;
     }
 
