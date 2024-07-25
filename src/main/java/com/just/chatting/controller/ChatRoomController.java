@@ -38,8 +38,10 @@ public class ChatRoomController {
         User loginUser = principal.getUser();
         Optional<ChatRoom> chatRoom = chatService.findChatRoomByUsers(chatRoomDto.getToUserIdList(),loginUser.getId());
         if(chatRoom.isPresent()){
-            resultBox.put("success",true);
+            resultBox.put("chatRoomIsPresent",true);
             resultBox.put("chatRoomId",chatRoom.get().getId());
+        } else {
+            resultBox.put("chatRoomIsPresent",false);
         }
         return ResponseEntity.ok(resultBox);
     }

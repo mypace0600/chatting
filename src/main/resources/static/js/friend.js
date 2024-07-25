@@ -128,9 +128,10 @@ let friendIndex = {
         });
     },
     chatEnterToggle: function (id) {
-
+        console.log(id);
         let userIdList = [];
         userIdList.push(id);
+        console.log(userIdList);
         let data = { toUserIdList: userIdList };
         // 채팅방 확인 요청을 Promise로 처리
         function checkChatRoom() {
@@ -168,7 +169,7 @@ let friendIndex = {
 
         // 채팅방 확인 후 처리
         checkChatRoom().then(resp => {
-            if (resp.success === true) {
+            if (resp.chatRoomIsPresent === true) {
                 let chatRoomId = resp.chatRoomId;
                 location.href = "/chat/room/" + chatRoomId;
             } else {
