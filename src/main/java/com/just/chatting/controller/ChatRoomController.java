@@ -37,6 +37,7 @@ public class ChatRoomController {
         CamelCaseMap resultBox = new CamelCaseMap();
         User loginUser = principal.getUser();
         Optional<ChatRoom> chatRoom = chatService.findChatRoomByUsers(chatRoomDto.getToUserIdList(),loginUser.getId());
+        log.info("@@@@@@@@@@@ chatRoom is present ? :{}",chatRoom.isPresent());
         if(chatRoom.isPresent()){
             resultBox.put("chatRoomIsPresent",true);
             resultBox.put("chatRoomId",chatRoom.get().getId());

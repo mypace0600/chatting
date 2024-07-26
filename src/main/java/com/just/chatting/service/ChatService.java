@@ -28,8 +28,8 @@ public class ChatService {
     private final ChatRoomUserRepository chatRoomUserRepository;
     private final ChatMessageRepository chatMessageRepository;
 
-    public Optional<ChatRoom> findChatRoomByUsers(List<Integer> toUserId, Integer fromUserId) {
-        return chatRoomRepository.findByUsers(toUserId,toUserId.size(),fromUserId);
+    public Optional<ChatRoom> findChatRoomByUsers(List<Integer> toUserIdList, Integer fromUserId) {
+        return chatRoomRepository.findByUsers(toUserIdList,fromUserId);
     }
 
     public ChatRoom createChatRoom(List<Integer> toUserIdList,Integer fromUserId) {
