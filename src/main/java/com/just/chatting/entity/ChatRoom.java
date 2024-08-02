@@ -29,6 +29,13 @@ public class ChatRoom {
     @JsonIgnore
     private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<ChatMessage> chatMessages = new ArrayList<>();
+
+    @CreatedDate
+    private Timestamp createdDt;
+
     public ChatRoom(String name) {
         this.name = name;
     }
@@ -36,8 +43,5 @@ public class ChatRoom {
     public static ChatRoom create(String name) {
         return new ChatRoom(name);
     }
-
-    @CreatedDate
-    private Timestamp createdDt;
 }
 
