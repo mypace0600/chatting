@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +37,18 @@ public class ChatService {
     public ChatRoom createChatRoom(List<Integer> toUserIdList,Integer fromUserId) {
         User fromUser = userRepository.findById(fromUserId).orElseThrow(EntityNotFoundException::new);
 
+
+        String tempChatName = fromUser.getNickName();
+        for(Integer toUserId : toUserIdList) {
+            User toUser = userRepository.findById(toUserId).orElseThrow(EntityNotFoundException::new);
+            tempChatName += ",";
+            tempChatName += toUser.getNickName();
+        }
+
         ChatRoom chatRoom = new ChatRoom();
+        chatRoom.setName(tempChatName);
+        chatRoom.setCreatedDt(Timestamp.valueOf(LocalDateTime.now()));
+
         chatRoom = chatRoomRepository.save(chatRoom);
 
         ChatRoomUser chatRoomUserFrom = new ChatRoomUser();
@@ -45,11 +58,14 @@ public class ChatService {
 
         for(Integer toUserId : toUserIdList) {
             User toUser = userRepository.findById(toUserId).orElseThrow(EntityNotFoundException::new);
+            tempChatName += ",";
+            tempChatName += toUser.getNickName();
             ChatRoomUser chatRoomUserTo = new ChatRoomUser();
             chatRoomUserTo.setChatRoom(chatRoom);
             chatRoomUserTo.setUser(toUser);
             chatRoomUserRepository.save(chatRoomUserTo);
         }
+
         return chatRoom;
     }
 
