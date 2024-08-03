@@ -47,6 +47,13 @@ public class ChatRoomController {
         return ResponseEntity.ok(resultBox);
     }
 
+    @GetMapping("/rooms")
+    public String chatRoomList(@AuthenticationPrincipal PrincipalDetail principal, Model model){
+        List<ChatRoom> chatRoomList = chatService.findAllByUserId(principal.getUser().getId());
+        model.addAttribute("chatRoomList",chatRoomList);
+        return "index-chatroom";
+    }
+
     @PostMapping("/room")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> createChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){

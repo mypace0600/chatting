@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface ChatRoomRepositoryCustom {
 
     Optional<ChatRoom> findByUsers(List<Integer> toUserIdList,Integer fromUserId);
+    List<ChatRoom> findAllByUserId(Integer userId);
 }

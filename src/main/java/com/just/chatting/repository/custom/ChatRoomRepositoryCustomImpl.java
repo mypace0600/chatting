@@ -43,4 +43,17 @@ public class ChatRoomRepositoryCustomImpl implements ChatRoomRepositoryCustom {
 
         return Optional.ofNullable(foundChatRoom);
     }
+
+    @Override
+    public List<ChatRoom> findAllByUserId(Integer userId){
+        QChatRoomUser chatRoomUser = QChatRoomUser.chatRoomUser;
+        QChatRoom chatRoom = QChatRoom.chatRoom;
+
+        List<ChatRoom> chatRoomList = queryFactory.select(chatRoom)
+                .from(chatRoomUser)
+                .where(chatRoomUser.user.id.eq(userId))
+                .fetch();
+
+        return chatRoomList;
+    }
 }

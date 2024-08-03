@@ -64,4 +64,8 @@ public class ChatService {
     public Page<ChatMessage> findChatMessagesByChatRoomId(Integer chatRoomId, Pageable pageable) {
         return chatMessageRepository.findByChatRoomId(chatRoomId,pageable);
     }
+
+    public List<ChatRoom> findAllByUserId(Integer id) {
+        return chatRoomRepository.findAllByUserId(id);
+    }
 }
