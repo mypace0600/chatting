@@ -5,6 +5,7 @@ let common = {
         $("#goBackBtn").on("click", this.goBack);
         $("#makeChatRoomBtn").on("click", this.friendListPopupShow);
         $("#createChatRoom").on("click",this.createChatRoom);
+        $("#friendListBtn").on("click",this.friendListOpen);
         $("#chatRoomListBtn").on("click",this.chatRoomListOpen);
         // 팝업 오버레이 클릭 시 이벤트 막기
         $("#popupOverlay").on('click', function(event) {
@@ -102,6 +103,10 @@ let common = {
 
     chatRoomListOpen : function (){
         location.href='/chat/rooms';
+    },
+
+    friendListOpen : function (){
+        location.href='/';
     }
 }
 

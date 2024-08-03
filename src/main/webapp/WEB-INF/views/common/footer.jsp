@@ -3,8 +3,12 @@
 <footer>
     <sec:authorize access="isAuthenticated()">
         <div class="footer-buttons">
-            <button>친구목록보기</button>
-            <button type="button" id="chatRoomListBtn">채팅방목록보기</button>
+            <c:if test="${target eq 'friend'}">
+                <button type="button" id="chatRoomListBtn">채팅방목록보기</button>
+            </c:if>
+            <c:if test="${target eq 'chatRoom'}">
+                <button type="button" id="friendListBtn">친구목록보기</button>
+            </c:if>
             <button type="button" id="makeChatRoomBtn">채팅방만들기</button>
         </div>
     </sec:authorize>

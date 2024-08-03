@@ -27,6 +27,7 @@ public class MainController {
             model.addAttribute("friendList", friendList);
             model.addAttribute("friendCount", friendCount);
         }
+        model.addAttribute("target","friend");
         return "index-friend";
     }
 }

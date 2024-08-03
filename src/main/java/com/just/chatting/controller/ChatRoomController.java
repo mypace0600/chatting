@@ -51,6 +51,7 @@ public class ChatRoomController {
     public String chatRoomList(@AuthenticationPrincipal PrincipalDetail principal, Model model){
         List<ChatRoom> chatRoomList = chatService.findAllByUserId(principal.getUser().getId());
         model.addAttribute("chatRoomList",chatRoomList);
+        model.addAttribute("target","chatRoom");
         return "index-chatroom";
     }
 
