@@ -87,7 +87,6 @@ let chatIndex = {
 
     loadMoreMessages: function() {
         this.loading = true;
-        console.log(this.currentPage);
 
         $.ajax({
             url: `/chat/room/${roomId}/messages?page=${this.currentPage}`,

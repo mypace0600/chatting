@@ -78,9 +78,7 @@ public class ChatRoomController {
     @GetMapping("/room/{chatRoomId}/messages")
     @ResponseBody
     public List<ChatMessage> getChatMessages(@PathVariable("chatRoomId") Integer chatRoomId, @RequestParam("page") int page) {
-        log.info("@@@@@@@@@@@@@ page :{}",page);
         Page<ChatMessage> chatMessages = chatService.findChatMessagesByChatRoomId(chatRoomId, PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "sendDt")));
-        log.info("@@@@@@@@@@@@@ chatMessage.size() :{}",chatMessages.getSize());
         for(ChatMessage cm : chatMessages) {
             log.info("@@@@@@@@@@@@@@ cm :{}",cm.getContent());
         }

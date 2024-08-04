@@ -78,7 +78,7 @@ public class ChatService {
     }
 
     public Page<ChatMessage> findChatMessagesByChatRoomId(Integer chatRoomId, Pageable pageable) {
-        return chatMessageRepository.findByChatRoomId(chatRoomId,pageable);
+        return chatMessageRepository.findByChatRoomIdOrderBySendDt(chatRoomId,pageable);
     }
 
     public List<ChatRoom> findAllByUserId(Integer id) {
