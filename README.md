@@ -47,6 +47,9 @@
 - aws ec2를 통한 배포 🔴
 - docker jenkins를 통한 CICD 자동화 🔴
 
+## 6. 추후 계획
+- websocket , sockjs 에서 kafka로 전환
+- postgresql에서 chatmessage 만 mongodb로 전환
 ### 참고 : 
 - https://woo0doo.tistory.com/38
 - https://github.com/hansun-hub/webSocket
