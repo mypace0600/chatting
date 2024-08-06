@@ -84,4 +84,8 @@ public class ChatService {
     public List<ChatRoom> findAllByUserId(Integer id) {
         return chatRoomRepository.findAllByUserId(id);
     }
+
+    public Optional<ChatRoomUser> findByChatRoomIdAndUserId(ChatRoom chatRoom,User user){
+        return chatRoomUserRepository.findByChatRoomIdAndUserId(chatRoom, user);
+    }
 }

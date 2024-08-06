@@ -5,6 +5,7 @@ import com.just.chatting.config.security.PrincipalDetail;
 import com.just.chatting.dto.ChatRoomDto;
 import com.just.chatting.entity.ChatMessage;
 import com.just.chatting.entity.ChatRoom;
+import com.just.chatting.entity.ChatRoomUser;
 import com.just.chatting.entity.User;
 import com.just.chatting.repository.ChatRoomRepository;
 import com.just.chatting.service.ChatService;
@@ -79,9 +80,17 @@ public class ChatRoomController {
     @ResponseBody
     public List<ChatMessage> getChatMessages(@PathVariable("chatRoomId") Integer chatRoomId, @RequestParam("page") int page) {
         Page<ChatMessage> chatMessages = chatService.findChatMessagesByChatRoomId(chatRoomId, PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "sendDt")));
-        for(ChatMessage cm : chatMessages) {
-            log.info("@@@@@@@@@@@@@@ cm :{}",cm.getContent());
-        }
         return chatMessages.getContent();
+    }
+
+    @PostMapping("/room/leave")
+    @ResponseBody
+    public ResponseEntity<CamelCaseMap> leaveChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
+        ChatRoom chatRoom = chatService.findChatRoomById(chatRoomDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
+        ChatRoomUser chatRoomUser = chatService.findByChatRoomIdAndUserId(chatRoom,principal.getUser()).orElseThrow(EntityNotFoundException::new);
+        log.info("@@@@@@@@@@@@@@@@@ chatRoomUser :{}",chatRoomUser.getId());
+        CamelCaseMap resultBox = new CamelCaseMap();
+        resultBox.put("success",true);
+        return ResponseEntity.ok(resultBox);
     }
 }
