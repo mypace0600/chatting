@@ -17,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,13 +26,14 @@ import java.util.Map;
 
 @Slf4j
 @Controller
+@RequestMapping("/friend")
 @RequiredArgsConstructor
 public class FriendController {
 
     private final FriendService friendService;
     private final UserService userService;
 
-    @PostMapping("/friend/search")
+    @PostMapping("/search")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> searchFriend(@RequestBody FriendSearchDto searchDto){
         CamelCaseMap resultBox = new CamelCaseMap();
@@ -44,7 +42,7 @@ public class FriendController {
         return ResponseEntity.ok(resultBox);
     }
 
-    @PostMapping("/friend/ask")
+    @PostMapping("/ask")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> askFriend(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody FriendDto friendDto){
         CamelCaseMap resultBox = new CamelCaseMap();
@@ -58,14 +56,14 @@ public class FriendController {
         return ResponseEntity.ok(resultBox);
     }
 
-    @GetMapping("/friend/to-me-list")
+    @GetMapping("/to-me-list")
     public String receivedList(@AuthenticationPrincipal PrincipalDetail principal, Model model){
         List<Friend> friendList = friendService.findAllByToUser(principal.getUser());
         model.addAttribute("friendList",friendList);
         return "friend/toMeList";
     }
 
-    @PostMapping("/friend/approve")
+    @PostMapping("/approve")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> approveFriend(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody FriendDto friendDto){
         CamelCaseMap resultBox = new CamelCaseMap();
@@ -80,14 +78,14 @@ public class FriendController {
         return ResponseEntity.ok(resultBox);
     }
 
-    @GetMapping("/friend/from-me-list")
+    @GetMapping("/from-me-list")
     public String requestedList(@AuthenticationPrincipal PrincipalDetail principal, Model model){
         List<Friend> friendList = friendService.findAllByFromUser(principal.getUser());
         model.addAttribute("friendList",friendList);
         return "friend/fromMeList";
     }
 
-    @PostMapping("/friend/approve-cancel")
+    @PostMapping("/approve-cancel")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> approveCancelFriend(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody FriendDto friendDto){
         CamelCaseMap resultBox = new CamelCaseMap();
@@ -102,13 +100,28 @@ public class FriendController {
         return ResponseEntity.ok(resultBox);
     }
 
-    @PostMapping("/friend/request-cancel")
+    @PostMapping("/request-cancel")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> requestCancelFriend(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody FriendDto friendDto){
         CamelCaseMap resultBox = new CamelCaseMap();
         User user = principal.getUser();
         try {
             friendService.cancelRequest(user, friendDto.getToUserId());
+            resultBox.put("success",true);
+        } catch (Exception e){
+            e.printStackTrace();
+            resultBox.put("success",false);
+        }
+        return ResponseEntity.ok(resultBox);
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<CamelCaseMap> deleteFriend(@AuthenticationPrincipal PrincipalDetail principal, @RequestBody FriendDto friendDto){
+        CamelCaseMap resultBox = new CamelCaseMap();
+        User user = principal.getUser();
+        try {
+            friendService.deleteFriend(user, friendDto.getToUserId());
             resultBox.put("success",true);
         } catch (Exception e){
             e.printStackTrace();

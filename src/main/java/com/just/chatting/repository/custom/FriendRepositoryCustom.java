@@ -11,7 +11,7 @@ public interface FriendRepositoryCustom {
 
     List<Friend> findAllByToUser(User user);
 
-    Optional<Friend> findByToUserAndFromUser(Integer id, int fromUserId);
+    Optional<Friend> findByToUserAndFromUser(User toUser, User fromUser);
 
     List<Friend> findAllByFromUser(User user);
 }

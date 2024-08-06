@@ -13,6 +13,9 @@ let common = {
                 event.stopPropagation();
             }
         });
+        $(".deleteFriendBtn").on('click',function(event){
+            common.deleteFriend(event.target.id);
+        });
 
         // 닫기 버튼 이벤트 설정
          $('.close-btn').on('click', this.closePopup);
@@ -107,6 +110,26 @@ let common = {
 
     friendListOpen : function (){
         location.href='/';
+    },
+
+    deleteFriend : function (id){
+        console.log(id);
+        let data = {
+            toUserId : id
+        }
+        $.ajax({
+            type: 'POST',
+            url: "/friend/delete",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function (resp) {
+            if(resp.success==true){
+                location.reload();
+            }
+        }).fail(function (error) {
+            alert(error.message)
+        });
     }
 }
 

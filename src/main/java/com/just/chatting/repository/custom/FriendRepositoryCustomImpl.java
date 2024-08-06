@@ -51,14 +51,15 @@ public class FriendRepositoryCustomImpl implements FriendRepositoryCustom{
     }
 
 
-    public Optional<Friend> findByToUserAndFromUser(Integer toUserId, int fromUserId) {
+    public Optional<Friend> findByToUserAndFromUser(User toUser, User fromUser) {
 
         Friend friend = queryFactory
                 .select(QFriend.friend)
                 .from(QFriend.friend)
-                .where(QFriend.friend.toUser.id.eq(toUserId)
-                        .and(QFriend.friend.fromUser.id.eq(fromUserId))
-                        .and(QFriend.friend.areWeFriend.isFalse()))
+                .where((QFriend.friend.toUser.id.eq(toUser.getId())
+                        .and(QFriend.friend.fromUser.id.eq(fromUser.getId())))
+                        .or(QFriend.friend.toUser.id.eq(fromUser.getId())
+                                .and(QFriend.friend.fromUser.id.eq(toUser.getId()))))
                 .fetchOne();
 
         return Optional.ofNullable(friend);

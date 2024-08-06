@@ -7,6 +7,7 @@ import com.just.chatting.repository.FriendRepository;
 import com.just.chatting.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FriendService {
@@ -54,7 +56,8 @@ public class FriendService {
 
     @Transactional
     public void yesWeAreFriend(User user, int fromUserId) {
-        Friend friend = friendRepository.findByToUserAndFromUser(user.getId(),fromUserId).orElseThrow(EntityNotFoundException::new);
+        User fromUser = userRepository.findById(fromUserId).orElseThrow(EntityNotFoundException::new);
+        Friend friend = friendRepository.findByToUserAndFromUser(user,fromUser).orElseThrow(EntityNotFoundException::new);
         friend.setAreWeFriend(true);
         friendRepository.save(friend);
     }
@@ -66,8 +69,18 @@ public class FriendService {
 
     @Transactional
     public void cancelRequest(User user, int toUserId) {
-        Friend friend = friendRepository.findByToUserAndFromUser(toUserId,user.getId()).orElseThrow(EntityNotFoundException::new);
+        User toUser = userRepository.findById(toUserId).orElseThrow(EntityNotFoundException::new);
+        Friend friend = friendRepository.findByToUserAndFromUser(toUser,user).orElseThrow(EntityNotFoundException::new);
         if(!friend.isAreWeFriend()){
+            friendRepository.deleteById(friend.getId());
+        }
+    }
+
+    @Transactional
+    public void deleteFriend(User user, int toUserId){
+        User toUser = userRepository.findById(toUserId).orElseThrow(EntityNotFoundException::new);
+        Friend friend = friendRepository.findByToUserAndFromUser(toUser,user).orElseThrow(EntityNotFoundException::new);
+        if(friend.isAreWeFriend()){
             friendRepository.deleteById(friend.getId());
         }
     }
