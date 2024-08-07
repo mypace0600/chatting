@@ -3,6 +3,7 @@ let common = {
         $("#sideBarBtn").on("click", this.sideBarToggle);
         $("#closeSideBarBtn").on("click", this.sideBarToggle);
         $("#goBackBtn").on("click", this.goBack);
+        $("#chatRoomMenuBtn").on("click", this.chatRoomMenu);
         $("#makeChatRoomBtn").on("click", this.friendListPopupShow);
         $("#createChatRoom").on("click",this.createChatRoom);
         $("#friendListBtn").on("click",this.friendListOpen);
@@ -25,12 +26,16 @@ let common = {
     },
 
     sideBarToggle: function () {
-        let sideBarContainer = $("#sideBarContainer");
+        let sideBarContainer = $("#sideBarLeftContainer");
         sideBarContainer.toggleClass("activeView nonActiveView");
     },
 
     goBack: function() {
         location.href="/";
+    },
+
+    chatRoomMenu : function() {
+
     },
 
     friendListPopupShow: function() {
