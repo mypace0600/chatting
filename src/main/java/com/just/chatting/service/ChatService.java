@@ -37,7 +37,6 @@ public class ChatService {
     public ChatRoom createChatRoom(List<Integer> toUserIdList,Integer fromUserId) {
         User fromUser = userRepository.findById(fromUserId).orElseThrow(EntityNotFoundException::new);
 
-
         String tempChatName = fromUser.getNickName();
         for(Integer toUserId : toUserIdList) {
             User toUser = userRepository.findById(toUserId).orElseThrow(EntityNotFoundException::new);

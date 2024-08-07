@@ -9,9 +9,8 @@
         <ul>
             <c:forEach var="chatRoom" items="${chatRoomList}">
                 <li>
-                    <input type="hidden" class="chatRoomId", value="${chatRoom.id}">
                     <span>${chatRoom.name}</span>
-                    <button type="button" class="chatBtn">enter</button>
+                    <button type="button" class="chatBtn" id="${chatRoom.id}">enter</button>
                     <button type="button" class="deleteChatRoomBtn" id="${chatRoom.id}">delete</button>
                 </li>
             </c:forEach>

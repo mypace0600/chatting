@@ -38,7 +38,6 @@ public class ChatRoomController {
         CamelCaseMap resultBox = new CamelCaseMap();
         User loginUser = principal.getUser();
         Optional<ChatRoom> chatRoom = chatService.findChatRoomByUsers(chatRoomDto.getToUserIdList(),loginUser.getId());
-        log.info("@@@@@@@@@@@ chatRoom is present ? :{}",chatRoom.isPresent());
         if(chatRoom.isPresent()){
             resultBox.put("chatRoomIsPresent",true);
             resultBox.put("chatRoomId",chatRoom.get().getId());
@@ -88,7 +87,6 @@ public class ChatRoomController {
     public ResponseEntity<CamelCaseMap> leaveChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
         ChatRoom chatRoom = chatService.findChatRoomById(chatRoomDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
         ChatRoomUser chatRoomUser = chatService.findByChatRoomIdAndUserId(chatRoom,principal.getUser()).orElseThrow(EntityNotFoundException::new);
-        log.info("@@@@@@@@@@@@@@@@@ chatRoomUser :{}",chatRoomUser.getId());
         CamelCaseMap resultBox = new CamelCaseMap();
         resultBox.put("success",true);
         return ResponseEntity.ok(resultBox);
