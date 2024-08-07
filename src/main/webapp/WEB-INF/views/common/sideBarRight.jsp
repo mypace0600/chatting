@@ -5,8 +5,9 @@
     <div id="sideBarBoxRight">
         <div id="sideBar">
             <div>
-                <div><a href="/friend/to-me-list">채팅방 나가기</a></div>
-                <div><a href="/friend/from-me-list">채팅방 이름 수정</a></div>
+                <div><button type="button" class="inviteBtn">친구 초대하기</button></div>
+                <div><button type="button" class="editBtn">채팅방 이름 수정</button></div>
+                <div><button type="button" class="leaveBtn">채팅방 퇴장하기</button></div>
             </div>
             <button type="button" id="closeSideBarBtnRight">닫기</button>
         </div>

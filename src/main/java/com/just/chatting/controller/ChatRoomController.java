@@ -95,8 +95,17 @@ public class ChatRoomController {
     @PostMapping("/room/leave")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> leaveChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
+        CamelCaseMap resultBox = new CamelCaseMap();
+        resultBox.put("success",true);
+        return ResponseEntity.ok(resultBox);
+    }
+
+    @PostMapping("/room/edit")
+    @ResponseBody
+    public ResponseEntity<CamelCaseMap> editChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
         ChatRoom chatRoom = chatService.findChatRoomById(chatRoomDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
-        ChatRoomUser chatRoomUser = chatService.findByChatRoomIdAndUserId(chatRoom,principal.getUser()).orElseThrow(EntityNotFoundException::new);
+        chatRoom.setName(chatRoomDto.getChatRoomName());
+        chatService.save(chatRoom);
         CamelCaseMap resultBox = new CamelCaseMap();
         resultBox.put("success",true);
         return ResponseEntity.ok(resultBox);

@@ -5,11 +5,11 @@
         <div class="popup">
             <div class="popup-header">
                 <span>채팅방 이름 변경</span>
-                <button class="close-btn" onclick="closePopup()">X</button>
+                <button class="close-btn closeChatRoomNameEditPopup" >X</button>
             </div>
             <div class="popup-content">
                 <input type="text" id="chatRoomName" placeholder="${chatRoom.name}"/>
-                <button type="button" id="createChatRoom">저장</button>
+                <button type="button" class="chatRoomNameSaveBtn">저장</button>
             </div>
         </div>
     </div>

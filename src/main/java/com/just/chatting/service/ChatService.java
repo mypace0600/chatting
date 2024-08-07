@@ -87,4 +87,8 @@ public class ChatService {
     public Optional<ChatRoomUser> findByChatRoomIdAndUserId(ChatRoom chatRoom,User user){
         return chatRoomUserRepository.findByChatRoomIdAndUserId(chatRoom, user);
     }
+
+    public void save(ChatRoom chatRoom) {
+        chatRoomRepository.save(chatRoom);
+    }
 }

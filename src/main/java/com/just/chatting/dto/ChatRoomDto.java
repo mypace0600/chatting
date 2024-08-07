@@ -10,5 +10,6 @@ import java.util.List;
 public class ChatRoomDto {
     private Integer chatRoomId;
     private Integer fromUserId;
+    private String chatRoomName;
     private List<Integer> toUserIdList;
 }

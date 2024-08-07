@@ -5,7 +5,7 @@ let common = {
         $("#goBackBtn").on("click", this.goBack);
         $("#sideBarRightBtn").on("click", this.sideBarRightToggle);
         $("#closeSideBarBtnRight").on("click", this.sideBarRightToggle);
-        $("#makeChatRoomBtn").on("click", this.friendListPopupShow);
+        $("#makeChatRoomBtn").on("click", this.openFriendListPopup);
         $("#createChatRoom").on("click",this.createChatRoom);
         $("#friendListBtn").on("click",this.friendListOpen);
         $("#chatRoomListBtn").on("click",this.chatRoomListOpen);
@@ -21,9 +21,10 @@ let common = {
         $(".deleteChatRoomBtn").on('click',function(event){
             common.deleteChatRoomBtn(event.target.id);
         });
-
-        // 닫기 버튼 이벤트 설정
-         $('.close-btn').on('click', this.closePopup);
+        $(".editBtn").on('click',this.chatRoomNameEditPopup);
+        $('.closeFriendListPopup').on('click', this.closeFriendListPopup);
+        $('.closeChatRoomNameEditPopup').on('click', this.closeChatRoomNameEditPopup);
+        $('.chatRoomNameSaveBtn').on('click',this.chatRoomNameSave);
     },
 
     sideBarLeftToggle: function () {
@@ -40,11 +41,11 @@ let common = {
         sideBarRightContainer.toggleClass("activeView nonActiveView");
     },
 
-    friendListPopupShow: function() {
+    openFriendListPopup: function() {
         document.getElementById('friendListPopup').classList.remove("noneActive");
     },
 
-    closePopup: function() {
+    closeFriendListPopup: function() {
         document.getElementById('friendListPopup').classList.add("noneActive");
     },
 
@@ -160,7 +161,40 @@ let common = {
         }).fail(function (error) {
             alert(error.message)
         });
+    },
+
+    chatRoomNameEditPopup : function() {
+        let chatRoomNameEditPopup = document.getElementById("chatRoomNameEditPopup");
+        chatRoomNameEditPopup.classList.remove("nonActiveView");
+        chatRoomNameEditPopup.classList.add("activeView");
     }
+    ,
+    closeChatRoomNameEditPopup : function (){
+        document.getElementById('chatRoomNameEditPopup').classList.add("noneActive");
+        document.getElementById('chatRoomNameEditPopup').classList.remove("activeView");
+    },
+    chatRoomNameSave : function (){
+        let chatRoomId = document.getElementById('chatRoomId').value;
+        let chatRoomName = document.getElementById('chatRoomName').value;
+        let data = {
+            chatRoomId: chatRoomId,
+            chatRoomName: chatRoomName
+        }
+        $.ajax({
+            type: 'POST',
+            url: "/chat/room/edit",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function (resp) {
+            if(resp.success==true){
+                common.closeChatRoomNameEditPopup();
+            }
+        }).fail(function (error) {
+            alert(error.message)
+        });
+    }
+
 }
 
 common.init();

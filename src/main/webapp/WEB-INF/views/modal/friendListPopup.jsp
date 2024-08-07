@@ -5,7 +5,7 @@
         <div class="popup">
             <div class="popup-header">
                 <span>초대할 친구 목록</span>
-                <button class="close-btn" onclick="closePopup()">X</button>
+                <button class="close-btn closeFriendListPopup" onclick="closePopup()">X</button>
             </div>
             <div class="popup-content">
                 <ul>
