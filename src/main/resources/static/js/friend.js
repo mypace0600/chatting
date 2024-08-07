@@ -16,7 +16,10 @@ let friendIndex = {
             friendIndex.cancelRequestFriend(id);
         });
         $(".chatBtn").on("click", function(event) {
-            friendIndex.chatEnterToggle(event.target.id);
+            friendIndex.chatRoomEnterByChatRoomId(event.target.id);
+        });
+        $(".friendBtn").on("click", function(event) {
+            friendIndex.chatRoomEnterByFriendId(event.target.id);
         });
     },
 
@@ -126,7 +129,11 @@ let friendIndex = {
             alert(JSON.stringify(error));
         });
     },
-    chatEnterToggle: function (id) {
+    chatRoomEnterByChatRoomId : function (id) {
+        console.log(id);
+        location.href = "/chat/room/"+id;
+    },
+    chatRoomEnterByFriendId: function (id) {
         console.log(id);
         let userIdList = [];
         userIdList.push(id);

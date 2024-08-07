@@ -82,6 +82,16 @@ public class ChatRoomController {
         return chatMessages.getContent();
     }
 
+    @PostMapping("/room/enter")
+    @ResponseBody
+    public ResponseEntity<CamelCaseMap> enterChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
+        ChatRoom chatRoom = chatService.findChatRoomById(chatRoomDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
+        ChatRoomUser chatRoomUser = chatService.findByChatRoomIdAndUserId(chatRoom,principal.getUser()).orElseThrow(EntityNotFoundException::new);
+        CamelCaseMap resultBox = new CamelCaseMap();
+        resultBox.put("success",true);
+        return ResponseEntity.ok(resultBox);
+    }
+
     @PostMapping("/room/leave")
     @ResponseBody
     public ResponseEntity<CamelCaseMap> leaveChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){

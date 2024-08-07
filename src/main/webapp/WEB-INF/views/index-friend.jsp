@@ -9,9 +9,8 @@
         <ul>
             <c:forEach var="user" items="${friendList}">
                 <li>
-                    <input type="hidden" class="toUserId", value="${user.id}">
                     <span>${user.nickName}</span>
-                    <button type="button" class="chatBtn">chat</button>
+                    <button type="button" class="friendBtn" id="${user.id}">chat</button>
                     <button type="button" class="deleteFriendBtn" id="${user.id}">delete</button>
                 </li>
             </c:forEach>
