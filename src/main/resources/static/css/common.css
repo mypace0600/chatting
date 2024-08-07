@@ -222,10 +222,18 @@ body {
     width: 100%;
     height: 100vh;
 }
-#sideBarBox {
+#sideBarBoxLeft {
     display: flex;
     width: 100%;
     height: 100%;
+    justify-content: start;
+}
+
+#sideBarBoxRight {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: end;
 }
 
 #sideBar {
@@ -244,7 +252,13 @@ body {
     background-color: rgba(211, 211, 211, 0.5);;
 }
 
-#closeSideBarBtn {
+#closeSideBarBtnLeft {
+    position:absolute;
+    top:10px;
+    right:10px;
+}
+
+#closeSideBarBtnRight {
     position:absolute;
     top:10px;
     right:10px;

@@ -5,6 +5,6 @@
 <header>
     <div class="headerBox">
         <button class="btn" id="goBackBtn"><i class="bi bi-arrow-left"></i></button>
-        <button class="btn" id="chatRoomMenuBtn"><i class="bi bi-list"></i></button>
+        <button class="btn" id="sideBarRightBtn"><i class="bi bi-list"></i></button>
     </div>
 </header>

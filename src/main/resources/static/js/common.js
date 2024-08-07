@@ -1,9 +1,10 @@
 let common = {
     init: function () {
-        $("#sideBarBtn").on("click", this.sideBarToggle);
-        $("#closeSideBarBtn").on("click", this.sideBarToggle);
+        $("#sideBarLeftBtn").on("click", this.sideBarLeftToggle);
+        $("#closeSideBarBtnLeft").on("click", this.sideBarLeftToggle);
         $("#goBackBtn").on("click", this.goBack);
-        $("#chatRoomMenuBtn").on("click", this.chatRoomMenu);
+        $("#sideBarRightBtn").on("click", this.sideBarRightToggle);
+        $("#closeSideBarBtnRight").on("click", this.sideBarRightToggle);
         $("#makeChatRoomBtn").on("click", this.friendListPopupShow);
         $("#createChatRoom").on("click",this.createChatRoom);
         $("#friendListBtn").on("click",this.friendListOpen);
@@ -25,17 +26,18 @@ let common = {
          $('.close-btn').on('click', this.closePopup);
     },
 
-    sideBarToggle: function () {
-        let sideBarContainer = $("#sideBarLeftContainer");
-        sideBarContainer.toggleClass("activeView nonActiveView");
+    sideBarLeftToggle: function () {
+        let sideBarLeftContainer = $("#sideBarLeftContainer");
+        sideBarLeftContainer.toggleClass("activeView nonActiveView");
     },
 
     goBack: function() {
         location.href="/";
     },
 
-    chatRoomMenu : function() {
-
+    sideBarRightToggle : function() {
+        let sideBarRightContainer = $("#sideBarRightContainer");
+        sideBarRightContainer.toggleClass("activeView nonActiveView");
     },
 
     friendListPopupShow: function() {
