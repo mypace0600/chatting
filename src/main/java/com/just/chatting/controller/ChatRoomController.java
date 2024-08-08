@@ -97,6 +97,14 @@ public class ChatRoomController {
     public ResponseEntity<CamelCaseMap> leaveChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
         CamelCaseMap resultBox = new CamelCaseMap();
         resultBox.put("success",true);
+        try {
+            ChatRoom chatRoom = chatService.findChatRoomById(chatRoomDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
+            ChatRoomUser chatRoomUser = chatService.findByChatRoomIdAndUserId(chatRoom, principal.getUser()).orElseThrow(EntityNotFoundException::new);
+            chatService.deleteChatRoomUser(chatRoomUser);
+        } catch (Exception e){
+            e.printStackTrace();
+            resultBox.put("success",false);
+        }
         return ResponseEntity.ok(resultBox);
     }
 

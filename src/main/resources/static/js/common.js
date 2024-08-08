@@ -156,7 +156,7 @@ let common = {
             dataType: "json"
         }).done(function (resp) {
             if(resp.success==true){
-                location.reload();
+                location.href="/";
             }
         }).fail(function (error) {
             alert(error.message)

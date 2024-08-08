@@ -85,10 +85,14 @@ public class ChatService {
     }
 
     public Optional<ChatRoomUser> findByChatRoomIdAndUserId(ChatRoom chatRoom,User user){
-        return chatRoomUserRepository.findByChatRoomIdAndUserId(chatRoom, user);
+        return chatRoomUserRepository.findByChatRoomAndUser(chatRoom, user);
     }
 
     public void save(ChatRoom chatRoom) {
         chatRoomRepository.save(chatRoom);
+    }
+
+    public void deleteChatRoomUser(ChatRoomUser chatRoomUser) {
+        chatRoomUserRepository.delete(chatRoomUser);
     }
 }
