@@ -25,6 +25,7 @@ let common = {
         $('.closeFriendListPopup').on('click', this.closeFriendListPopup);
         $('.closeChatRoomNameEditPopup').on('click', this.closeChatRoomNameEditPopup);
         $('.chatRoomNameSaveBtn').on('click',this.chatRoomNameSave);
+        $('.inviteBtn').on('click', this.openFriendListToInvitePopup);
     },
 
     sideBarLeftToggle: function () {
@@ -193,6 +194,10 @@ let common = {
         }).fail(function (error) {
             alert(error.message)
         });
+    },
+
+    openFriendListToInvitePopup : function (){
+        document.getElementById('friendListPopup').classList.remove("noneActive");
     }
 
 }

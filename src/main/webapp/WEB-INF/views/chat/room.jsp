@@ -5,6 +5,7 @@
 <%@include file="../common/goBackAndMenuHeader.jsp"%>
 <%@include file="../common/sideBarRight.jsp"%>
 <%@include file="../modal/chatRoomNameEditPopup.jsp"%>
+<%@include file="../modal/friendListToInvitePopup.jsp"%>
 <div class="main-content">
     <div class="chat-container">
         <input type="hidden" id="chatRoomId" value="${chatRoom.id}"/>

@@ -95,4 +95,5 @@ public class ChatService {
     public void deleteChatRoomUser(ChatRoomUser chatRoomUser) {
         chatRoomUserRepository.delete(chatRoomUser);
     }
+
 }

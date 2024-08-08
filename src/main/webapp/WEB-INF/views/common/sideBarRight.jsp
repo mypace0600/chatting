@@ -5,7 +5,7 @@
     <div id="sideBarBoxRight">
         <div id="sideBar">
             <div>
-                <div><button type="button" class="inviteBtn">친구 초대하기</button></div>
+                <div><button type="button" class="inviteBtn" id="${chatRoom.id}">친구 초대하기</button></div>
                 <div><button type="button" class="editBtn">채팅방 이름 수정</button></div>
                 <div><button type="button" class="deleteChatRoomBtn" id="${chatRoom.id}">채팅방 퇴장하기</button></div>
             </div>

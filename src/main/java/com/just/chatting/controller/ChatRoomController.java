@@ -9,6 +9,8 @@ import com.just.chatting.entity.ChatRoomUser;
 import com.just.chatting.entity.User;
 import com.just.chatting.repository.ChatRoomRepository;
 import com.just.chatting.service.ChatService;
+import com.just.chatting.service.FriendService;
+import com.just.chatting.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +23,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -31,6 +35,7 @@ import java.util.Optional;
 public class ChatRoomController {
 
     private final ChatService chatService;
+    private final FriendService friendService;
 
     @PostMapping("/check")
     @ResponseBody
@@ -72,6 +77,18 @@ public class ChatRoomController {
         model.addAttribute("latestChatMessageList", latestChatMessageList.getContent());
         model.addAttribute("chatRoom",chatRoom);
         model.addAttribute("senderId",principal.getUser().getId());
+
+        List<User> myFriendList = friendService.findAllFriendsOfMine(principal);
+        List<ChatRoomUser> chatRoomUserList = chatRoom.getChatRoomUserList();
+        List<User> userListInThisChatRoom = chatRoomUserList.stream().map(ChatRoomUser::getUser).toList();
+        List<User> friendListNotInThisChatRoom = new ArrayList<>();
+        for(User friend : myFriendList){
+            if(!userListInThisChatRoom.contains(friend)){
+               friendListNotInThisChatRoom.add(friend);
+            }
+        }
+
+        model.addAttribute("friendListNotInThisChatRoom",friendListNotInThisChatRoom);
         return "chat/room";
     }
 
