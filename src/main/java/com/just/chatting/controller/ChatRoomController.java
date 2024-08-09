@@ -36,6 +36,7 @@ public class ChatRoomController {
 
     private final ChatService chatService;
     private final FriendService friendService;
+    private final UserService userService;
 
     @PostMapping("/check")
     @ResponseBody
@@ -77,9 +78,9 @@ public class ChatRoomController {
         model.addAttribute("latestChatMessageList", latestChatMessageList.getContent());
         model.addAttribute("chatRoom",chatRoom);
         model.addAttribute("senderId",principal.getUser().getId());
-
-        List<User> myFriendList = friendService.findAllFriendsOfMine(principal);
         List<ChatRoomUser> chatRoomUserList = chatRoom.getChatRoomUserList();
+        model.addAttribute("chatRoomUserList",chatRoomUserList);
+        List<User> myFriendList = friendService.findAllFriendsOfMine(principal);
         List<User> userListInThisChatRoom = chatRoomUserList.stream().map(ChatRoomUser::getUser).toList();
         List<User> friendListNotInThisChatRoom = new ArrayList<>();
         for(User friend : myFriendList){
@@ -131,6 +132,22 @@ public class ChatRoomController {
         ChatRoom chatRoom = chatService.findChatRoomById(chatRoomDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
         chatRoom.setName(chatRoomDto.getChatRoomName());
         chatService.save(chatRoom);
+        CamelCaseMap resultBox = new CamelCaseMap();
+        resultBox.put("success",true);
+        return ResponseEntity.ok(resultBox);
+    }
+
+    @PostMapping("/room/invite")
+    @ResponseBody
+    public ResponseEntity<CamelCaseMap> inviteFriendToChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
+        ChatRoom chatRoom = chatService.findChatRoomById(chatRoomDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
+        for(Integer userId : chatRoomDto.getInviteFriendIdList()){
+            User invitedFriend = userService.findById(userId).orElseThrow(EntityNotFoundException::new);
+            ChatRoomUser chatRoomUser = new ChatRoomUser();
+            chatRoomUser.setChatRoom(chatRoom);
+            chatRoomUser.setUser(invitedFriend);
+            chatService.inviteFriendToChatRoom(chatRoomUser);
+        }
         CamelCaseMap resultBox = new CamelCaseMap();
         resultBox.put("success",true);
         return ResponseEntity.ok(resultBox);

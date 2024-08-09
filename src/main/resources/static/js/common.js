@@ -26,6 +26,7 @@ let common = {
         $('.closeChatRoomNameEditPopup').on('click', this.closeChatRoomNameEditPopup);
         $('.chatRoomNameSaveBtn').on('click',this.chatRoomNameSave);
         $('.inviteBtn').on('click', this.openFriendListToInvitePopup);
+        $('#inviteFriendBtn').on('click', this.inviteFriend);
     },
 
     sideBarLeftToggle: function () {
@@ -198,6 +199,29 @@ let common = {
 
     openFriendListToInvitePopup : function (){
         document.getElementById('friendListPopup').classList.remove("noneActive");
+    },
+
+    inviteFriend : function (){
+        let chatRoomId = document.getElementById('chatRoomId').value;
+        let targetUserIdList = document.querySelectorAll(".targetUserId:checked");
+        let checkedUserIdList = Array.from(targetUserIdList).map(checkbox => checkbox.id);
+        let data = {
+            chatRoomId: chatRoomId,
+            inviteFriendIdList: checkedUserIdList
+        }
+        $.ajax({
+            type: 'POST',
+            url: "/chat/room/invite",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function (resp) {
+            if(resp.success==true){
+                location.reload();
+            }
+        }).fail(function (error) {
+            alert(error.message)
+        });
     }
 
 }

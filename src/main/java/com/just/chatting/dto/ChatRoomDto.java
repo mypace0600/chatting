@@ -12,4 +12,5 @@ public class ChatRoomDto {
     private Integer fromUserId;
     private String chatRoomName;
     private List<Integer> toUserIdList;
+    private List<Integer> inviteFriendIdList;
 }

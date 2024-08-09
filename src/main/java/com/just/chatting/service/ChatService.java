@@ -96,4 +96,7 @@ public class ChatService {
         chatRoomUserRepository.delete(chatRoomUser);
     }
 
+    public void inviteFriendToChatRoom(ChatRoomUser chatRoomUser) {
+        chatRoomUserRepository.save(chatRoomUser);
+    }
 }
