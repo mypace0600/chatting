@@ -2,6 +2,7 @@ package com.just.chatting.controller;
 
 import com.just.chatting.common.CamelCaseMap;
 import com.just.chatting.config.security.PrincipalDetail;
+import com.just.chatting.dto.ChatMessageDto;
 import com.just.chatting.dto.ChatRoomDto;
 import com.just.chatting.entity.ChatMessage;
 import com.just.chatting.entity.ChatRoom;
@@ -18,11 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +41,8 @@ public class ChatRoomController {
     private final ChatService chatService;
     private final FriendService friendService;
     private final UserService userService;
+    private final SimpMessageSendingOperations messagingTemplate;
+
 
     @PostMapping("/check")
     @ResponseBody
@@ -114,11 +120,19 @@ public class ChatRoomController {
     @ResponseBody
     public ResponseEntity<CamelCaseMap> leaveChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
         CamelCaseMap resultBox = new CamelCaseMap();
-        resultBox.put("success",true);
         try {
             ChatRoom chatRoom = chatService.findChatRoomById(chatRoomDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
             ChatRoomUser chatRoomUser = chatService.findByChatRoomIdAndUserId(chatRoom, principal.getUser()).orElseThrow(EntityNotFoundException::new);
+
+            ChatMessageDto exitMessage = new ChatMessageDto();
+            exitMessage.setChatRoomId(chatRoomDto.getChatRoomId());
+            exitMessage.setSenderId(null);
+            exitMessage.setSendDt(Timestamp.valueOf(LocalDateTime.now()));
+            exitMessage.setMessage(principal.getUser().getNickName() + "님이 채팅방에서 퇴장했습니다.");
+            messagingTemplate.convertAndSend("/topic/chat/room/"+chatRoomDto.getChatRoomId(),exitMessage);
+
             chatService.deleteChatRoomUser(chatRoomUser);
+            resultBox.put("success",true);
         } catch (Exception e){
             e.printStackTrace();
             resultBox.put("success",false);

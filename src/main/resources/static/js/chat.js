@@ -45,14 +45,17 @@ let chatIndex = {
                 chatIndex.stompClient.subscribe('/topic/chat/room/' + roomId, function(message) {
                     let data = JSON.parse(message.body);
                     console.log(data);
-                    let username = data.sender.id;
-                    let messageContent = data.content;
-                    let sendDt = new Date(data.sendDt).toLocaleString();
-
-                    if (username == document.getElementById("senderId").value) {
-                        chatIndex.appendMyMessage(messageContent, sendDt);
+                    if (data.senderId === null) {
+                        chatIndex.appendSystemMessage(data.message, data.sendDt);
                     } else {
-                        chatIndex.appendOtherMessage(username, messageContent, sendDt);
+                        let username = data.sender.id;
+                        let messageContent = data.content;
+                        let sendDt = new Date(data.sendDt).toLocaleString();
+                        if (username == document.getElementById("senderId").value) {
+                            chatIndex.appendMyMessage(messageContent, sendDt);
+                        } else {
+                            chatIndex.appendOtherMessage(username, messageContent, sendDt);
+                        }
                     }
                 });
             }, function(error) {
@@ -75,6 +78,15 @@ let chatIndex = {
         let messageList = $("#messageList");
         let messageItem = $('<div class="message-container other-message-container" style="display: flex; flex-direction: column; justify-content: center; align-items: start;">')
             .append($('<span class="message other-message">').html('<strong>' + username + '</strong>: ' + message))
+            .append($('<span class="message-date">').text(sendDt));
+        messageList.append(messageItem);
+        this.scrollToBottom();
+    },
+
+    appendSystemMessage: function(message, sendDt) {
+        let messageList = $("#messageList");
+        let messageItem = $('<div class="message-container system-message-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">')
+            .append($('<span class="message system-message">').text(message))
             .append($('<span class="message-date">').text(sendDt));
         messageList.append(messageItem);
         this.scrollToBottom();
