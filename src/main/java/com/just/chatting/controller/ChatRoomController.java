@@ -4,6 +4,7 @@ import com.just.chatting.common.CamelCaseMap;
 import com.just.chatting.config.security.PrincipalDetail;
 import com.just.chatting.dto.ChatMessageDto;
 import com.just.chatting.dto.ChatRoomDto;
+import com.just.chatting.dto.UserDto;
 import com.just.chatting.entity.ChatMessage;
 import com.just.chatting.entity.ChatRoom;
 import com.just.chatting.entity.ChatRoomUser;
@@ -130,6 +131,9 @@ public class ChatRoomController {
             exitMessage.setSendDt(Timestamp.valueOf(LocalDateTime.now()));
             exitMessage.setMessage(principal.getUser().getNickName() + "님이 채팅방에서 퇴장했습니다.");
             messagingTemplate.convertAndSend("/topic/chat/room/"+chatRoomDto.getChatRoomId(),exitMessage);
+
+            List<UserDto> updatedUserList = chatService.updatedUserList(principal.getUser(),chatRoom);
+            messagingTemplate.convertAndSend("/topic/chat/room/"+chatRoomDto.getChatRoomId()+"/user-list", updatedUserList);
 
             chatService.deleteChatRoomUser(chatRoomUser);
             resultBox.put("success",true);

@@ -58,11 +58,25 @@ let chatIndex = {
                         }
                     }
                 });
+
+                chatIndex.stompClient.subscribe('/topic/chat/room/' + roomId + '/user-list', function(userListMessage) {
+                    let users = JSON.parse(userListMessage.body);
+                    chatIndex.updateUserList(users);
+                });
             }, function(error) {
                 console.log('WebSocket connection error: ' + error);
                 setTimeout(() => chatIndex.connectToWebSocket(), 5000); // 재연결 시도
             });
         }
+    },
+
+    updateUserList: function(users) {
+        let userList = $("#sideBarRightContainer ul");
+        userList.empty(); // 현재 사용자 목록을 지움
+
+        users.forEach(user => {
+            userList.append($('<li>').text(user.nickName)); // 사용자 목록에 추가
+        });
     },
 
     appendMyMessage: function(message, sendDt) {

@@ -1,5 +1,6 @@
 package com.just.chatting.service;
 
+import com.just.chatting.dto.UserDto;
 import com.just.chatting.entity.ChatMessage;
 import com.just.chatting.entity.ChatRoom;
 import com.just.chatting.entity.ChatRoomUser;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,5 +100,20 @@ public class ChatService {
 
     public void inviteFriendToChatRoom(ChatRoomUser chatRoomUser) {
         chatRoomUserRepository.save(chatRoomUser);
+    }
+
+    public List<UserDto> updatedUserList(User user , ChatRoom chatRoom){
+        List<ChatRoomUser> existUserList = chatRoomUserRepository.findAllByChatRoom(chatRoom);
+        List<UserDto> updatedUserList = new ArrayList<>();
+        for(ChatRoomUser cru : existUserList){
+            if(!cru.getUser().getId().equals(user.getId())){
+                UserDto temp = new UserDto();
+                temp.setId(cru.getUser().getId());
+                temp.setEmail(cru.getUser().getEmail());
+                temp.setNickName(cru.getUser().getNickName());
+                updatedUserList.add(temp);
+            }
+        }
+        return updatedUserList;
     }
 }
