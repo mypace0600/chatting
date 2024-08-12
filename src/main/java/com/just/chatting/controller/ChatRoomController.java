@@ -125,13 +125,20 @@ public class ChatRoomController {
             ChatRoom chatRoom = chatService.findChatRoomById(chatRoomDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
             ChatRoomUser chatRoomUser = chatService.findByChatRoomIdAndUserId(chatRoom, principal.getUser()).orElseThrow(EntityNotFoundException::new);
 
-            ChatMessageDto exitMessage = new ChatMessageDto();
-            exitMessage.setChatRoomId(chatRoomDto.getChatRoomId());
-            exitMessage.setSenderId(null);
-            exitMessage.setSendDt(Timestamp.valueOf(LocalDateTime.now()));
-            exitMessage.setMessage(principal.getUser().getNickName() + "님이 채팅방에서 퇴장했습니다.");
-            messagingTemplate.convertAndSend("/topic/chat/room/"+chatRoomDto.getChatRoomId(),exitMessage);
+            ChatMessageDto systemMessageDto = new ChatMessageDto();
+            systemMessageDto.setChatRoomId(chatRoomDto.getChatRoomId());
+            systemMessageDto.setSenderId(null);
+            systemMessageDto.setSendDt(Timestamp.valueOf(LocalDateTime.now()));
+            systemMessageDto.setMessage(principal.getUser().getNickName() + "님이 채팅방에서 퇴장했습니다.");
+            messagingTemplate.convertAndSend("/topic/chat/room/"+chatRoomDto.getChatRoomId(),systemMessageDto);
 
+            ChatMessage systemMessage = new ChatMessage();
+            systemMessage.setContent(systemMessageDto.getMessage());
+            systemMessage.setChatRoom(chatRoom);
+            systemMessage.setSendDt(systemMessageDto.getSendDt());
+            systemMessage.setMessageType("system");
+            systemMessage.setSender(principal.getUser());
+            chatService.saveMessage(systemMessage);
             List<UserDto> updatedUserList = chatService.updatedUserList(principal.getUser(),chatRoom);
             messagingTemplate.convertAndSend("/topic/chat/room/"+chatRoomDto.getChatRoomId()+"/user-list", updatedUserList);
 
@@ -159,13 +166,38 @@ public class ChatRoomController {
     @ResponseBody
     public ResponseEntity<CamelCaseMap> inviteFriendToChatRoom(@RequestBody ChatRoomDto chatRoomDto, @AuthenticationPrincipal PrincipalDetail principal){
         ChatRoom chatRoom = chatService.findChatRoomById(chatRoomDto.getChatRoomId()).orElseThrow(EntityNotFoundException::new);
+        StringBuilder invitedFriends = new StringBuilder();
         for(Integer userId : chatRoomDto.getInviteFriendIdList()){
             User invitedFriend = userService.findById(userId).orElseThrow(EntityNotFoundException::new);
+            invitedFriends.append(invitedFriend.getNickName());
+            invitedFriends.append(",");
             ChatRoomUser chatRoomUser = new ChatRoomUser();
             chatRoomUser.setChatRoom(chatRoom);
             chatRoomUser.setUser(invitedFriend);
             chatService.inviteFriendToChatRoom(chatRoomUser);
         }
+        int length = invitedFriends.length();
+        invitedFriends.substring(0,length-1);
+        log.info("@@@@@@@@@@@@@@@@ invitedFriends : {}",invitedFriends.toString());
+
+        ChatMessageDto systemMessageDto = new ChatMessageDto();
+        systemMessageDto.setChatRoomId(chatRoomDto.getChatRoomId());
+        systemMessageDto.setSenderId(null);
+        systemMessageDto.setSendDt(Timestamp.valueOf(LocalDateTime.now()));
+        systemMessageDto.setMessage(invitedFriends + "님이 채팅방에 입장했습니다.");
+        messagingTemplate.convertAndSend("/topic/chat/room/"+chatRoomDto.getChatRoomId(),systemMessageDto);
+
+        ChatMessage systemMessage = new ChatMessage();
+        systemMessage.setContent(systemMessageDto.getMessage());
+        systemMessage.setChatRoom(chatRoom);
+        systemMessage.setSendDt(systemMessageDto.getSendDt());
+        systemMessage.setMessageType("system");
+        systemMessage.setSender(principal.getUser());
+        chatService.saveMessage(systemMessage);
+
+        List<UserDto> updatedUserList = chatService.updatedUserList(principal.getUser(),chatRoom);
+        messagingTemplate.convertAndSend("/topic/chat/room/"+chatRoomDto.getChatRoomId()+"/user-list", updatedUserList);
+
         CamelCaseMap resultBox = new CamelCaseMap();
         resultBox.put("success",true);
         return ResponseEntity.ok(resultBox);
