@@ -5,10 +5,8 @@ import com.just.chatting.config.security.PrincipalDetail;
 import com.just.chatting.dto.ChatMessageDto;
 import com.just.chatting.dto.ChatRoomDto;
 import com.just.chatting.dto.UserDto;
-import com.just.chatting.entity.ChatMessage;
-import com.just.chatting.entity.ChatRoom;
-import com.just.chatting.entity.ChatRoomUser;
-import com.just.chatting.entity.User;
+import com.just.chatting.entity.*;
+import com.just.chatting.repository.ChatMessageReadStatusRepository;
 import com.just.chatting.repository.ChatRoomRepository;
 import com.just.chatting.service.ChatService;
 import com.just.chatting.service.FriendService;
@@ -43,6 +41,7 @@ public class ChatRoomController {
     private final FriendService friendService;
     private final UserService userService;
     private final SimpMessageSendingOperations messagingTemplate;
+    private final ChatMessageReadStatusRepository chatMessageReadStatusRepository;
 
 
     @PostMapping("/check")
@@ -81,6 +80,7 @@ public class ChatRoomController {
     @GetMapping("/room/{chatRoomId}")
     public String chatRoom(@PathVariable("chatRoomId") Integer chatRoomId, @AuthenticationPrincipal PrincipalDetail principal, Model model){
         ChatRoom chatRoom = chatService.findChatRoomById(chatRoomId).orElseThrow(EntityNotFoundException::new);
+
         Page<ChatMessage> latestChatMessageList = chatService.findChatMessagesByChatRoomId(chatRoomId, PageRequest.of(0,10,Sort.by(Sort.Direction.DESC, "sendDt")));
         model.addAttribute("latestChatMessageList", latestChatMessageList.getContent());
         model.addAttribute("chatRoom",chatRoom);
@@ -201,5 +201,16 @@ public class ChatRoomController {
         CamelCaseMap resultBox = new CamelCaseMap();
         resultBox.put("success",true);
         return ResponseEntity.ok(resultBox);
+    }
+
+    @PostMapping("/room/{roomId}/read")
+    @ResponseBody
+    public ResponseEntity<Void> markMessageAsRead(@PathVariable("roomId") Integer roomId, @AuthenticationPrincipal PrincipalDetail principal) {
+        List<ChatMessageReadStatus> readStatusList = chatMessageReadStatusRepository.findByChatMessageChatRoomIdAndUserIdAndIsReadFalse(roomId, principal.getUser().getId());
+        for(ChatMessageReadStatus status : readStatusList) {
+            status.setRead(true);
+            chatMessageReadStatusRepository.save(status);
+        }
+        return ResponseEntity.ok().build();
     }
 }

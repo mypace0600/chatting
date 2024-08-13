@@ -55,6 +55,7 @@ let chatIndex = {
                             chatIndex.appendMyMessage(messageContent, sendDt);
                         } else {
                             chatIndex.appendOtherMessage(username, messageContent, sendDt);
+                            markMessageAsRead(roomId);
                         }
                     }
                 });
@@ -152,6 +153,19 @@ let chatIndex = {
         });
 
         this.currentPage++;
+    },
+
+    markMessageAsRead : function (roomId) {
+        $.ajax({
+            url: `/chat/room/${roomId}/read`,
+            method: 'POST',
+            success: function() {
+                console.log('Message marked as read');
+            },
+            error: function(error) {
+                console.log('Error marking message as read:', error);
+            }
+        });
     }
 }
 

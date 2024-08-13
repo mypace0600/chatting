@@ -1,14 +1,8 @@
 package com.just.chatting.service;
 
 import com.just.chatting.dto.UserDto;
-import com.just.chatting.entity.ChatMessage;
-import com.just.chatting.entity.ChatRoom;
-import com.just.chatting.entity.ChatRoomUser;
-import com.just.chatting.entity.User;
-import com.just.chatting.repository.ChatRoomRepository;
-import com.just.chatting.repository.ChatRoomUserRepository;
-import com.just.chatting.repository.ChatMessageRepository;
-import com.just.chatting.repository.UserRepository;
+import com.just.chatting.entity.*;
+import com.just.chatting.repository.*;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -31,6 +26,7 @@ public class ChatService {
     private final UserRepository userRepository;
     private final ChatRoomUserRepository chatRoomUserRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatMessageReadStatusRepository chatMessageReadStatusRepository;
 
     public Optional<ChatRoom> findChatRoomByUsers(List<Integer> toUserIdList, Integer fromUserId) {
         return chatRoomRepository.findByUsers(toUserIdList,fromUserId);
@@ -115,5 +111,19 @@ public class ChatService {
             }
         }
         return updatedUserList;
+    }
+
+    @Transactional
+    public void markAllMessagesAsRead(ChatRoom chatRoom, User user) {
+        List<ChatMessageReadStatus> unreadStatuses = chatMessageReadStatusRepository.findByChatMessageChatRoomIdAndUserIdAndIsReadFalse(chatRoom.getId(), user.getId());
+        for (ChatMessageReadStatus status : unreadStatuses) {
+            log.info("@@@@@@@@@@@@ {} : {} / {}",status.getUser(),status.getChatMessage(),status.isRead());
+            status.setRead(true);
+        }
+        chatMessageReadStatusRepository.saveAll(unreadStatuses);
+    }
+
+    public int countUnreadMessages(Integer chatRoomId, Integer userId) {
+        return chatMessageReadStatusRepository.countByChatMessageChatRoomIdAndUserIdAndIsReadFalse(chatRoomId, userId);
     }
 }
