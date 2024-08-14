@@ -104,6 +104,10 @@ public class ChatRoomController {
     @ResponseBody
     public List<ChatMessage> getChatMessages(@PathVariable("chatRoomId") Integer chatRoomId, @RequestParam("page") int page) {
         Page<ChatMessage> chatMessages = chatService.findChatMessagesByChatRoomId(chatRoomId, PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "sendDt")));
+
+        for(ChatMessage cm : chatMessages){
+            log.info("@@@@@@@@@@@@@@@@ {} : {}",cm.getSender().getId(), cm.getContent());
+        }
         return chatMessages.getContent();
     }
 

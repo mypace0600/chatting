@@ -65,3 +65,9 @@
 ## 6. 추후 계획
 - websocket , sockjs 에서 kafka로 전환
 - postgresql에서 chatmessage 만 mongodb로 전환
+
+
+## 🚨오류 사항
+### 8/14
+- 과거 채팅 목록이 노출되지 않음
+- 채팅을 보낸 사람은 읽음처리가 되는데 받은 사람들에게 읽음처리가 되지 않음
